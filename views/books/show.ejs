@@ -1,0 +1,41 @@
+<% layout('layouts/boilerplate') %>
+    <link rel="stylesheet" href="/stylesheets/stars.css">
+
+    <div class="row">
+        <div class="col-6">
+
+            <div class="card mb-3">
+                <img src="<%= book.image %>" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <%= book.title %>
+                    </h5>
+                    <p class="card-text">
+                        <%= book.blurb %>
+                    </p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item text-muted">
+                        by <%= book.author %>
+                    </li>
+                    <li class="list-group-item">
+                        ISBN: <%= book.isbn %>
+                    </li>
+                </ul>
+                <!-- if clause -->
+                <div class="card-body">
+                    <a href="/books/<%= book._id %>/edit" class="card-link btn btn-info">Edit</a>
+                    <form class="d-inline" action="/books/<%= book._id %>?_method=DELETE" method="POST">
+                        <button class="btn btn-warning">Delete</button>
+                    </form>
+                </div>
+                <!-- if clause -->
+                <div class="card-footer text-muted">
+                    2 days ago
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <p> space for some reviews</p>
+        </div>
+    </div>
