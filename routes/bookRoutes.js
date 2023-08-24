@@ -7,7 +7,7 @@ const { isLoggedIn, validateBook, isOwner } = require('../middleware');
 
 
 router.route('/')
-    .get(catchAsync(books.index))
+    .get(isLoggedIn, catchAsync(books.index))
     .post(isLoggedIn, validateBook, catchAsync(books.createBook));
 
 router.get('/mine', isLoggedIn, books.myIndex);
@@ -15,7 +15,7 @@ router.get('/mine', isLoggedIn, books.myIndex);
 router.get('/new', isLoggedIn, books.renderNewForm);
 
 router.route('/:id')
-    .get(catchAsync(books.showBook))
+    .get(isLoggedIn, catchAsync(books.showBook))
     .put(isLoggedIn, isOwner, validateBook, catchAsync(books.updateBook))
     .delete(isLoggedIn, isOwner, catchAsync(books.deleteBook));
 

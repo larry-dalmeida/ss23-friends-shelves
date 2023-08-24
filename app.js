@@ -66,7 +66,7 @@ app.use('/books', bookRoutes);
 app.use('/books/:id/reviews', reviewRoutes);
 
 app.get('/', (req, res) => {
-    res.redirect('books/all')
+    res.render('landingPage')
 });
 
 app.all('*', (req, res, next) => {
