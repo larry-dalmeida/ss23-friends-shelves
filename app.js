@@ -1,6 +1,8 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
+const ExpressError = require('./utils/ExpressError');
+const catchAsync = require('./utils/catchAsync');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const Book = require('./models/book');
@@ -27,10 +29,10 @@ app.get('/', (req, res) => {
     res.redirect('books/mine')
 });
 
-app.get('/books', async (req, res) => {
+app.get('/books', catchAsync(async (req, res) => {
     const books = await Book.find({});
     res.render('books/all', { books });
-});
+}));
 
 app.get('/books/mine', (req, res) => {
     res.render('books/mine')
@@ -40,13 +42,13 @@ app.get('/books/new', (req, res) => {
     res.render('books/new');
 });
 
-app.post('/books', async (req, res, next) => {
+app.post('/books', catchAsync(async (req, res, next) => {
     const book = new Book(req.body.book);
     await book.save();
     res.redirect(`/books/${book._id}`);
-})
+}))
 
-app.get('/books/:id', async (req, res) => {
+app.get('/books/:id', catchAsync(async (req, res) => {
     const book = await Book.findById(req.params.id)
     // .populate({
     //     path: 'reviews',
@@ -60,7 +62,7 @@ app.get('/books/:id', async (req, res) => {
     //     return res.redirect('/campgrounds');
     // };
     res.render('books/show', { book });
-})
+}))
 
 app.get('/books/:id/edit', async (req, res) => {
     const book = await Book.findById(req.params.id)
@@ -81,13 +83,6 @@ app.delete('/books/:id', async (req, res) => {
     res.redirect('/books');
 })
 
-app.get('/makebook', async (req, res) => {
-    const book = new Book({ title: 'Name of the wind', author: 'Patrick Rothuss' });
-    await book.save();
-    res.send(book)
-})
-
-
 
 app.route('/register')
     .get((req, res) => {
@@ -99,8 +94,15 @@ app.route('/login')
         res.render('users/login');
     })
 
+app.all('*', (req, res, next) => {
+    next(new ExpressError('Page Not Found', 404))
+})
 
-
+app.use((err, req, res, next) => {
+    const { statusCode = 500 } = err;
+    if (!err.message) err.message = 'Oh No, Something went wrong!';
+    res.status(statusCode).render('error', { err });
+});
 
 
 app.listen(8080, () => {
