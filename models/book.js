@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const BookSchema = new Schema({
     title: String,
     author: String,
-    isbn: String,
+    isbn: Number,
     image: String,
     blurb: String,
     // owner: {
