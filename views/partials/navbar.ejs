@@ -12,9 +12,12 @@
                 <a class="nav-link" href="/books/new">New Book</a>
             </div>
             <div class="navbar-nav ms-auto">
-                <!-- logic from camp when there are existing sessiongs and users -->
-                <a href="/login" class="nav-link">Login</a>
-                <a href="/register" class="nav-link">Register</a>
+                <% if(!currentUser) {%>
+                    <a href="/login" class="nav-link">Login</a>
+                    <a href="/register" class="nav-link">Register</a>
+                    <% } else { %>
+                        <a href="/logout" class="nav-link">Logout</a>
+                        <% }; %>
             </div>
         </div>
     </div>

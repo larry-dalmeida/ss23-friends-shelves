@@ -8,16 +8,16 @@ const BookSchema = new Schema({
     isbn: String,
     image: String,
     blurb: String,
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+    },
     reviews: [
         {
             type: Schema.Types.ObjectId,
             ref: 'Review',
         }
     ]
-    // owner: {
-    //     type: Schema.Types.ObjectId,
-    //     ref: 'User',
-    // },
 });
 
 // delete the reviews in the reviews database when a book is deleted

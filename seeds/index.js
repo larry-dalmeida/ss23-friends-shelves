@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { firstName, lastName, titleStart, titleEnd } = require('./seedHelpers');
+const { firstName, lastName, titleStart, titleEnd, bookOwners } = require('./seedHelpers');
 const Book = require('../models/book');
 
 mongoose.connect('mongodb://127.0.0.1:27017/friends-shelves');
@@ -24,6 +24,7 @@ const seedDB = async () => {
             isbn: '978-3-608-93800-5',
             image: 'https://tse1.mm.bing.net/th?id=OIP.8LPxqTvPFvkgPax6lRcYPwHaKe&pid=Api',
             blurb: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa nihil nisi sit sapiente, eligendi, vero totam vel sequi asperiores ipsa iusto esse quaerat cumque doloribus delectus amet sint id minus.',
+            owner: `${sample(bookOwners)}`,
         });
         await book.save();
     }

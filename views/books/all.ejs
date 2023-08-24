@@ -16,15 +16,15 @@
                             <%= book.title %>
                         </h5>
                         <p class="card-text text-muted">
-                            by <%= book.author %>
+                            written by <%= book.author %>
                         </p>
                         <p class="card-text">
                             <%= book.blurb %>
                         </p>
+                        <p class="card-text">
+                            This copy is owned by <%= book.owner.username %>
+                        </p>
                         <a href="/books/<%= book._id %>" class="btn btn-primary">View <%= book.title %></a>
-                        <form class="d-inline" action="/books/<%= book._id %>?_method=DELETE" method="POST">
-                            <button class="btn btn-warning">Delete</button>
-                        </form>
                     </div>
                 </div>
             </div>

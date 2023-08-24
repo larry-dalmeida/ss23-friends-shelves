@@ -1,7 +1,7 @@
 const Book = require('../models/book');
 
 module.exports.index = async (req, res) => {
-    const books = await Book.find({});
+    const books = await Book.find({}).populate('owner');
     res.render('books/all', { books });
 };
 
@@ -15,21 +15,20 @@ module.exports.renderNewForm = (req, res) => {
 
 module.exports.createBook = async (req, res, next) => {
     const book = new Book(req.body.book);
+    book.owner = req.user._id;
     await book.save();
     req.flash('success', 'You successfully created a new book!');
     res.redirect(`/books/${book._id}`);
 };
 
 module.exports.showBook = async (req, res) => {
-    const book = await Book.findById(req.params.id).populate('reviews');
-    // .populate({
-    //     path: 'reviews',
-    // populate: {
-    //     path: 'author'
-    // },
-    // })
-    // .populate('author');
-    // console.log(book);
+    const book = await Book.findById(req.params.id).populate({
+        path: 'reviews',
+        populate: {
+            path: 'writer'
+        },
+    }).populate('owner');
+    console.log(book);
     if (!book) {
         req.flash('error', 'Cannot find that book!');
         return res.redirect('/books');

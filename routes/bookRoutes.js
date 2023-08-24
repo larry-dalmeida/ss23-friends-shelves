@@ -2,24 +2,24 @@ const express = require('express');
 const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
 const books = require('../controllers/books');
-const { validateBook } = require('../middleware');
+const { isLoggedIn, validateBook, isOwner } = require('../middleware');
 
 
 
 router.route('/')
     .get(catchAsync(books.index))
-    .post(validateBook, catchAsync(books.createBook));
+    .post(isLoggedIn, validateBook, catchAsync(books.createBook));
 
-router.get('/mine', books.myIndex);
+router.get('/mine', isLoggedIn, books.myIndex);
 
-router.get('/new', books.renderNewForm);
+router.get('/new', isLoggedIn, books.renderNewForm);
 
 router.route('/:id')
     .get(catchAsync(books.showBook))
-    .put(validateBook, catchAsync(books.updateBook))
-    .delete(catchAsync(books.deleteBook));
+    .put(isLoggedIn, isOwner, validateBook, catchAsync(books.updateBook))
+    .delete(isLoggedIn, isOwner, catchAsync(books.deleteBook));
 
-router.get('/:id/edit', catchAsync(books.renderEditForm));
+router.get('/:id/edit', isLoggedIn, isOwner, catchAsync(books.renderEditForm));
 
 
 module.exports = router;
