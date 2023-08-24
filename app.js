@@ -6,6 +6,7 @@ const catchAsync = require('./utils/catchAsync');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const Book = require('./models/book');
+const { validateBook } = require('./middleware');
 
 mongoose.connect('mongodb://127.0.0.1:27017/friends-shelves');
 
@@ -42,7 +43,7 @@ app.get('/books/new', (req, res) => {
     res.render('books/new');
 });
 
-app.post('/books', catchAsync(async (req, res, next) => {
+app.post('/books', validateBook, catchAsync(async (req, res, next) => {
     const book = new Book(req.body.book);
     await book.save();
     res.redirect(`/books/${book._id}`);
