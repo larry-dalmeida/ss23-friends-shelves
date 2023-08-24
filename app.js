@@ -66,24 +66,24 @@ app.get('/books/:id', catchAsync(async (req, res) => {
     res.render('books/show', { book });
 }))
 
-app.get('/books/:id/edit', async (req, res) => {
+app.get('/books/:id/edit', catchAsync(async (req, res) => {
     const book = await Book.findById(req.params.id)
     res.render('books/edit', { book });
-})
+}))
 
-app.put('/books/:id', async (req, res) => {
+app.put('/books/:id', validateBook, catchAsync(async (req, res) => {
     const { id } = req.params;
     const book = await Book.findByIdAndUpdate(id, { ...req.body.book });
     // req.flash('success', 'Successfully updated campground!');
     res.redirect(`/books/${book._id}`)
-})
+}))
 
-app.delete('/books/:id', async (req, res) => {
+app.delete('/books/:id', catchAsync(async (req, res) => {
     const { id } = req.params;
     await Book.findByIdAndDelete(id);
     // req.flash('success', 'Successfully deleted a campground!');
     res.redirect('/books');
-})
+}))
 
 
 app.route('/register')
