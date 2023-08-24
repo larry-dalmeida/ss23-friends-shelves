@@ -6,7 +6,8 @@ const catchAsync = require('./utils/catchAsync');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const Book = require('./models/book');
-const { validateBook } = require('./middleware');
+const Review = require('./models/review');
+const { validateBook, validateReview } = require('./middleware');
 
 mongoose.connect('mongodb://127.0.0.1:27017/friends-shelves');
 
@@ -51,17 +52,18 @@ app.post('/books', validateBook, catchAsync(async (req, res, next) => {
 }))
 
 app.get('/books/:id', catchAsync(async (req, res) => {
-    const book = await Book.findById(req.params.id)
+    const book = await Book.findById(req.params.id).populate('reviews');
     // .populate({
     //     path: 'reviews',
-    //     populate: {
-    //         path: 'author'
-    //     },
-    // }).populate('author');
-    // console.log(campground);
-    // if (!campground) {
-    //     req.flash('error', 'Cannot find that campground!');
-    //     return res.redirect('/campgrounds');
+    // populate: {
+    //     path: 'author'
+    // },
+    // })
+    // .populate('author');
+    // console.log(book);
+    // if (!book) {
+    //     req.flash('error', 'Cannot find that book!');
+    //     return res.redirect('/books');
     // };
     res.render('books/show', { book });
 }))
@@ -83,6 +85,28 @@ app.delete('/books/:id', catchAsync(async (req, res) => {
     await Book.findByIdAndDelete(id);
     // req.flash('success', 'Successfully deleted a campground!');
     res.redirect('/books');
+}))
+
+
+app.post('/books/:id/reviews', validateReview, catchAsync(async (req, res) => {
+    const book = await Book.findById(req.params.id);
+    const review = new Review(req.body.review);
+    // review.author = req.user._id;
+    book.reviews.push(review);
+    await review.save();
+    await book.save();
+    // req.flash('success', 'Created new review!');
+    res.redirect(`/books/${book._id}`);
+}
+
+))
+
+app.delete('/books/:id/reviews/:reviewId', catchAsync(async (req, res) => {
+    const { id, reviewId } = req.params;
+    await Book.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+    await Review.findByIdAndDelete(reviewId);
+    // req.flash('success', 'Successfully deleted a review!');
+    res.redirect(`/books/${id}`);
 }))
 
 
