@@ -9,6 +9,10 @@ const Book = require('./models/book');
 const Review = require('./models/review');
 const { validateBook, validateReview } = require('./middleware');
 
+const userRoutes = require('./routes/userRoutes');
+const bookRoutes = require('./routes/bookRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
+
 mongoose.connect('mongodb://127.0.0.1:27017/friends-shelves');
 
 const db = mongoose.connection;
@@ -28,97 +32,20 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 
+
+app.use('/', userRoutes);
+app.use('/books', bookRoutes);
+app.use('/books/:id/reviews', reviewRoutes);
+
 app.get('/', (req, res) => {
     res.redirect('books/mine')
 });
 
-app.get('/books', catchAsync(async (req, res) => {
-    const books = await Book.find({});
-    res.render('books/all', { books });
-}));
-
-app.get('/books/mine', (req, res) => {
-    res.render('books/mine')
-});
-
-app.get('/books/new', (req, res) => {
-    res.render('books/new');
-});
-
-app.post('/books', validateBook, catchAsync(async (req, res, next) => {
-    const book = new Book(req.body.book);
-    await book.save();
-    res.redirect(`/books/${book._id}`);
-}))
-
-app.get('/books/:id', catchAsync(async (req, res) => {
-    const book = await Book.findById(req.params.id).populate('reviews');
-    // .populate({
-    //     path: 'reviews',
-    // populate: {
-    //     path: 'author'
-    // },
-    // })
-    // .populate('author');
-    // console.log(book);
-    // if (!book) {
-    //     req.flash('error', 'Cannot find that book!');
-    //     return res.redirect('/books');
-    // };
-    res.render('books/show', { book });
-}))
-
-app.get('/books/:id/edit', catchAsync(async (req, res) => {
-    const book = await Book.findById(req.params.id)
-    res.render('books/edit', { book });
-}))
-
-app.put('/books/:id', validateBook, catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const book = await Book.findByIdAndUpdate(id, { ...req.body.book });
-    // req.flash('success', 'Successfully updated campground!');
-    res.redirect(`/books/${book._id}`)
-}))
-
-app.delete('/books/:id', catchAsync(async (req, res) => {
-    const { id } = req.params;
-    await Book.findByIdAndDelete(id);
-    // req.flash('success', 'Successfully deleted a campground!');
-    res.redirect('/books');
-}))
 
 
-app.post('/books/:id/reviews', validateReview, catchAsync(async (req, res) => {
-    const book = await Book.findById(req.params.id);
-    const review = new Review(req.body.review);
-    // review.author = req.user._id;
-    book.reviews.push(review);
-    await review.save();
-    await book.save();
-    // req.flash('success', 'Created new review!');
-    res.redirect(`/books/${book._id}`);
-}
-
-))
-
-app.delete('/books/:id/reviews/:reviewId', catchAsync(async (req, res) => {
-    const { id, reviewId } = req.params;
-    await Book.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-    await Review.findByIdAndDelete(reviewId);
-    // req.flash('success', 'Successfully deleted a review!');
-    res.redirect(`/books/${id}`);
-}))
 
 
-app.route('/register')
-    .get((req, res) => {
-        res.render('users/register');
-    })
 
-app.route('/login')
-    .get((req, res) => {
-        res.render('users/login');
-    })
 
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found', 404))
