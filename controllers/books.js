@@ -5,8 +5,9 @@ module.exports.index = async (req, res) => {
     res.render('books/all', { books });
 };
 
-module.exports.myIndex = (req, res) => {
-    res.render('books/mine')
+module.exports.myIndex = async (req, res) => {
+    const books = await Book.find({}).populate('owner');
+    res.render('books/mine', { books })
 };
 
 module.exports.renderNewForm = (req, res) => {
@@ -28,7 +29,6 @@ module.exports.showBook = async (req, res) => {
             path: 'writer'
         },
     }).populate('owner');
-    console.log(book);
     if (!book) {
         req.flash('error', 'Cannot find that book!');
         return res.redirect('/books');

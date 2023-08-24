@@ -1,3 +1,31 @@
 <% layout('layouts/boilerplate') %>
 
     <h1>My bookshelf</h1>
+
+    <% for (let book of books){ %>
+        <% if ( currentUser && book.owner.equals(currentUser._id)) { %>
+            <div class="card" mb-3>
+                <div class="row">
+                    <div class="col-md-2">
+                        <img class="img-fluid" src="<%= book.image %>" alt="">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <%= book.title %>
+                            </h5>
+                            <p class="card-text text-muted">
+                                written by <%= book.author %>
+                            </p>
+                            <p class="card-text">
+                                <%= book.blurb %>
+                            </p>
+                            <p class="card-text">
+                                This copy is owned by <%= book.owner.username %>
+                            </p>
+                            <a href="/books/<%= book._id %>" class="btn btn-primary">View <%= book.title %></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% }} %>
