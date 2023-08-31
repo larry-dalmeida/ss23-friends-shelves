@@ -2,7 +2,7 @@
 
     <div class="row">
         <h1 class="text-center">Login</h1>
-        <div class="col-6 offset-3">
+        <div class="col-6 offset-3 mb-3">
             <form action="/login" method="POST" novalidate class="validated-form">
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
@@ -14,6 +14,30 @@
 
                 </div>
                 <button class="btn btn-info">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="offset-3 col-2 text-center">
+            <form action="/login" method="POST">
+                <input type="hidden" name="username" value="bibi">
+                <input type="hidden" name="password" value="bibi">
+                <button class="btn btn-lg btn-warning">Login Bibi</button>
+            </form>
+        </div>
+        <div class="col-2 text-center">
+            <form action="/login" method="POST">
+                <input type="hidden" name="username" value="bodo">
+                <input type="hidden" name="password" value="bodo">
+                <button class="btn btn-lg btn-warning">Login Bodo</button>
+            </form>
+        </div>
+        <div class="col-2 text-center">
+            <form action="/login" method="POST">
+                <input type="hidden" name="username" value="bob">
+                <input type="hidden" name="password" value="bob">
+                <button class="btn btn-lg btn-warning">Login Bob</button>
             </form>
         </div>
     </div>

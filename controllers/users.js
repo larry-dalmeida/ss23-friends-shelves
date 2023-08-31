@@ -25,7 +25,8 @@ module.exports.renderLogin = (req, res) => {
 }
 
 module.exports.login = (req, res) => {
-    req.flash('success', `Welcome back!`);
+    const { username } = req.body;
+    req.flash('success', `Welcome back ${username}!`);
     const redirectUrl = res.locals.returnTo || '/books';
     res.redirect(redirectUrl);
 }
