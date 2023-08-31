@@ -43,6 +43,34 @@
 
         <footer class="mt-auto text-white-50">
             <span class="text-muted"> &copy; Friends Shelves - a TechLabs project </span>
+
+            <% if (!currentUser) { %>
+                <div class="text-center">
+                    <div class="row ">
+                        <div class="offset-2 col-3">
+                            <form action="/login" method="POST">
+                                <input type="hidden" name="username" value="bibi">
+                                <input type="hidden" name="password" value="bibi">
+                                <button class="btn btn-sm text-muted">Login Bibi</button>
+                            </form>
+                        </div>
+                        <div class="col-3 text-center">
+                            <form action="/login" method="POST">
+                                <input type="hidden" name="username" value="bodo">
+                                <input type="hidden" name="password" value="bodo">
+                                <button class="btn btn-sm text-muted">Login Bodo</button>
+                            </form>
+                        </div>
+                        <div class="col-3 text-center">
+                            <form action="/login" method="POST">
+                                <input type="hidden" name="username" value="bob">
+                                <input type="hidden" name="password" value="bob">
+                                <button class="btn btn-sm text-muted">Login Bob</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <% } %>
         </footer>
 
 
