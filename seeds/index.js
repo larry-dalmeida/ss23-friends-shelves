@@ -1,8 +1,15 @@
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
+}
+
 const mongoose = require('mongoose');
 const { firstName, lastName, titleStart, titleEnd, bookOwners } = require('./seedHelpers');
 const Book = require('../models/book');
+const Review = require('../models/review');
 
-mongoose.connect('mongodb://127.0.0.1:27017/friends-shelves');
+const dbURL = `${process.env.DB_URL}FriendsShelves`;
+//mongodb://127.0.0.1:27017/friends-shelves
+mongoose.connect(dbURL);
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
@@ -13,6 +20,7 @@ db.once("open", () => {
 const sample = array => array[Math.floor(Math.random() * array.length)];
 
 const seedDB = async () => {
+    await Review.deleteMany({});
     await Book.deleteMany({});
     // for checking if documents are properly connected:
     // const c = new Book({ title: 'purple field' });

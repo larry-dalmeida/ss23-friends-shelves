@@ -46,12 +46,10 @@ module.exports.titleEnd = [
     'Invisible Violin',
     'Goodbyes',
 ]
-
-//this is the user IDs of 3 users (bob bibi and bodo), that I created. I read out their user IDs from the users db and included them here
-// if you set up your own seeds, you have to first create 3 users and use their userIDs here
+// our 3 users are bob, bibi and bodo. all three have the username of their name and a password equal to their name
 module.exports.bookOwners = [
-    '64e7aef0e15cd3859bf21791',
-    '64e7ac6ee0bdfdab8326bad8',
-    '64e7abd0e0bdfdab8326babd',
+    '64f09610fcc82a3f318948fc',
+    '64f0969dfcc82a3f3189491a',
+    '64f096b7fcc82a3f31894921',
 ]
 
