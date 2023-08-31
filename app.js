@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
+}
+
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
@@ -14,7 +18,9 @@ const userRoutes = require('./routes/userRoutes');
 const bookRoutes = require('./routes/bookRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 
-mongoose.connect('mongodb://127.0.0.1:27017/friends-shelves');
+const dbURL = process.env.DB_URL;
+//mongodb://127.0.0.1:27017/friends-shelves
+mongoose.connect(`${dbURL}FriendsShelves`);
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
