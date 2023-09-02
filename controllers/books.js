@@ -6,8 +6,9 @@ module.exports.index = async (req, res) => {
 };
 
 module.exports.myIndex = async (req, res) => {
-    const books = await Book.find({}).populate('owner');
-    res.render('books/mine', { books })
+    const currentUser = req.user._id;
+    const mybooks = await Book.find({ owner: currentUser }).populate('owner');
+    res.render('books/mine', { mybooks })
 };
 
 module.exports.renderNewForm = (req, res) => {
