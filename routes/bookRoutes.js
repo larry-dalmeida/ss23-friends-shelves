@@ -10,7 +10,9 @@ router.route('/')
     .get(isLoggedIn, catchAsync(books.index))
     .post(isLoggedIn, validateBook, catchAsync(books.createBook));
 
-router.get('/mine', isLoggedIn, books.myIndex);
+router.get('/mine', isLoggedIn, catchAsync(books.myIndex));
+
+router.get('/search', isLoggedIn, catchAsync(books.search));
 
 router.get('/new', isLoggedIn, books.renderNewForm);
 
