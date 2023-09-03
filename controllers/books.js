@@ -1,14 +1,25 @@
 const Book = require('../models/book');
 
 module.exports.index = async (req, res) => {
-    const books = await Book.find({}).populate('owner');
-    res.render('books/all', { books });
+    const genres = ['fantasy', 'romance', 'crime'];
+    const filters = ['title', 'author', 'isbn'];
+    const books = await Book.find({}).populate('owner').sort({ title: 1 });
+    res.render('books/all', { books, genres, filters });
 };
 
 module.exports.myIndex = async (req, res) => {
     const currentUser = req.user._id;
-    const mybooks = await Book.find({ owner: currentUser }).populate('owner');
+    const mybooks = await Book.find({ owner: currentUser }).populate('owner').sort({ title: 1 });
     res.render('books/mine', { mybooks })
+};
+
+module.exports.search = async (req, res) => {
+    const { title, author, isbn, genres } = req.query.search;
+    // console.log(req.query);
+    // Backend: make Queries with $text work so that typing in one word will give all bigger strings as result that contain that partial string
+    // const books = await Book.find({ $text: { $search: `${title}` } }).populate('owner').sort({ title: 1 });
+    const books = await Book.find({ $or: [{ title: `${title}` }, { author: `${author}` }, { isbn: `${isbn}` }] }).populate('owner').sort({ title: 1 });
+    res.render('books/search', { books })
 };
 
 module.exports.renderNewForm = (req, res) => {
