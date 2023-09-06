@@ -13,7 +13,7 @@ function BookSearch({onSearch}){
             currData[changedField] = newValue;
             return{...currData};  
         })
-        onSearch(formData.title, formData.author, formData.ISBN)
+        onSearch(formData.title)
         console.log(formData)
     }
 
@@ -22,39 +22,15 @@ function BookSearch({onSearch}){
         <h2>Book Search</h2>
         <form className = "searchForm">
             <p>
-                <label>Title </label>
+                <label>Book Search</label>
                 <input 
                 type = "text"
-                placeholder = "title" 
+                placeholder = "Title, Author or ISBN" 
                 className="input" 
                 value = {formData.title} 
                 onChange = {handleChange}
                 name = "title"
                 id="title"
-                />
-            </p>
-            <p>
-                <label>Author </label>
-                <input
-                type = "text"
-                placeholder = "author" 
-                className="input" 
-                value = {formData.author} 
-                onChange = {handleChange}
-                name = "author"
-                id="author"
-                />
-            </p>
-                <p>
-                <label>ISBN </label>
-                <input 
-                type = "text"
-                placeholder = "ISBN" 
-                className="input" 
-                value = {formData.ISBN} 
-                onChange = {handleChange}
-                name = "ISBN"
-                id="ISBN"
                 />
             </p>
         </form>

@@ -74,9 +74,10 @@ button:focus-visible {
 
 .searchForm{
 
-  width: 100%;
-  position: relative; 
-  right: 0px;
+  width: 80%;
+  padding-left:600px;
+  z-index: 0; 
+
 }
 
 label, input{
@@ -117,7 +118,6 @@ input + label{
   
 }
 
-/* The navigation menu links */
 .navBar a {
   padding: 6px 8px 6px 16px;
   text-decoration: none;
@@ -146,5 +146,11 @@ input + label{
 .book-show{
 
   margin:10px;
+
+}
+
+.buttonBookCreate{
+
+  margin-right: 800px;
 
 }
