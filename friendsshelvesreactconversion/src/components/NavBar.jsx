@@ -2,7 +2,7 @@
 function NavBar(){
 
     
-    return(<div>
+    return(<div class= "navBar">
             <a class="nav-link" href="/books">All Books</a>
             <a class="nav-link" href="/books/mine">My Bookshelf</a>
             <a href="/login" class="nav-link">Login</a>
