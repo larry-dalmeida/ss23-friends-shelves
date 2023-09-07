@@ -4,8 +4,10 @@ import BookList from './components/BookList'
 import './App.css'
 import BookSearch from './components/BookSearch';
 import NavBar from './components/NavBar';
+import LoginForm from './components/LoginForm';
 
 function App() {
+  
   const [books, setBooks] = useState([]);
   const [searchBooks, setSearchBooks] = useState([]);
 
@@ -29,24 +31,25 @@ function App() {
         setBooks(updatedBooks);
     }
 
-    const searchBook = (title, author, ISBN) =>{
+    const searchBook = (title) =>{
       if(title && title.length > 1){
         const searchBooksTitle = books.filter((books) => {
           return books.title.includes(title);
         });
         setSearchBooks(searchBooksTitle)
-      }
-      else if(author && author.length > 1){
-        const searchBooksTitle = books.filter((books) => {
-          return books.author.includes(author);
-        });
-        setSearchBooks(searchBooksTitle)
-      }
-      else if(ISBN && ISBN.length > 1){
-        const searchBooksTitle = books.filter((books) => {
-          return books.ISBN.includes(ISBN);
-        });
-        setSearchBooks(searchBooksTitle)
+        if(searchBooksTitle.length == 0){
+          const searchBooksTitle = books.filter((books) => {
+            return books.author.includes(title);
+          });
+          setSearchBooks(searchBooksTitle)
+        
+          if(searchBooksTitle.length == 0){
+            const searchBooksTitle = books.filter((books) => {
+              return books.ISBN.includes(title);
+            });
+            setSearchBooks(searchBooksTitle)
+          }
+        }
       }
       else{
         setSearchBooks([])
@@ -67,13 +70,53 @@ function App() {
         setBooks(updatedBooks);
     };
 
-    return (
-        <div>
-            <NavBar />
-            <BookSearch onSearch={searchBook} />
-            <BookCreate onCreate={createBook} /> 
-            <BookList books={books} searchBooks = {searchBooks} onDelete={deleteBookById} onEdit={editBookById} onSearch={searchBook}/>
-        </div>)
+    //Handle login and password validation
+    const[showLogin, setShowLogin] = useState(true);
+    const[loggedIn, setLoggedIn] = useState(false);
+
+    const handleLogin = (username, password) => {
+      const searchUsers = users.filter((users) => {
+        return users.username.includes(username);
+      });
+
+      if(String(searchUsers[0].password) == String(password)){
+        setLoggedIn(true);
+          }  
+      if(loggedIn === true){
+        setShowLogin(false);
+      }
+    };
+
+    //Register users that are registring 
+    const [users, setUsers] = useState([]);
+
+    const handleRegister = (username, password, passwordConfirm) => {
+        const updatedUsers = [
+          ...users, {
+            username: username,
+            password: password,
+            passwordConfirm: passwordConfirm
+          }
+        ];
+        setUsers(updatedUsers);
+        
+    }
+
+
+    let showPage = <div><NavBar /> <LoginForm onSubmit={handleLogin} onRegister={handleRegister}/></div>
+
+    if(showLogin == false){
+      showPage = 
+      <div>
+        <NavBar /> 
+        <BookSearch onSearch={searchBook} />
+        <BookCreate onCreate={createBook} /> 
+        <BookList books={books} searchBooks = {searchBooks} onDelete={deleteBookById} onEdit={editBookById} onSearch={searchBook}/>
+    </div>
+    }
+
+    return (showPage)
+        
 }
 
 export default App

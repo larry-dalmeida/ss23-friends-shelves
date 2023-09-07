@@ -19,7 +19,7 @@ function BookSearch({onSearch}){
 
 
     return(<div>
-        <h2>Book Search</h2>
+        
         <form className = "searchForm">
             <p>
                 <label>Book Search</label>

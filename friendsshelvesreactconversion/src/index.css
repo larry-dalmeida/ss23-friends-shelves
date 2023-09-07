@@ -66,6 +66,7 @@ button:focus-visible {
 .book-list{
   display: flex;
   justify-content: center;
+  
 }
 
 .nav-link{
@@ -75,8 +76,12 @@ button:focus-visible {
 .searchForm{
 
   width: 80%;
-  padding-left:600px;
   z-index: 0; 
+  left:650px;
+  top: 50px;
+  z-index: 1;
+  position: fixed;
+  display: block;
 
 }
 
@@ -121,9 +126,11 @@ input + label{
 .navBar a {
   padding: 6px 8px 6px 16px;
   text-decoration: none;
-  font-size: 25px;
+  font-size: 15px;
+  font-weight: bold;
   color: #252424;
-  display: block;
+  display: inline-block;
+  
 }
 
 
@@ -151,6 +158,42 @@ input + label{
 
 .buttonBookCreate{
 
-  margin-right: 800px;
+  left:200px;
+  top: 50px;
+  z-index: 1;
+  position: fixed;
+  display: block;
+
+
+}
+
+.linkImage{
+
+  width: auto;
+  height: 30px;
+  
+}
+
+#registerFormLink{
+
+  color: #841821;
+  font-style: bold;
+  font-weight: 700;
+  padding: 15px;
+
+}
+
+#registerFormLink:hover{
+
+  cursor: pointer;
+  text-decoration: underline;
+
+}
+
+#logo{
+
+  width: auto;
+  height: 50px;
+  padding-bottom: 40px;
 
 }
