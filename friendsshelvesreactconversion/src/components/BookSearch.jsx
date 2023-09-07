@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 function BookSearch({onSearch}){
 
+    //Handle search querys coming in via the booksearch form
     const [formData, setFormData] = useState({title: ""})
 
     const handleChange = (event) => {
@@ -17,7 +18,7 @@ function BookSearch({onSearch}){
         console.log(formData)
     }
 
-
+    //Book search form
     return(<div>
         
         <form className = "searchForm">

@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 function BookCreateForm({onSubmit}){
 
+    //Handle book submit form changes and submit
     const [formData, setFormData] = useState({title: "", author: "", ISBN: "", blurb: ""})
 
     const handleChange = (event) => {
@@ -21,7 +22,7 @@ function BookCreateForm({onSubmit}){
     };
 
     
-
+    //Book creation form
     return (<div>
         <h2>Add a Book</h2>
           <form onSubmit = {handleSubmit}>

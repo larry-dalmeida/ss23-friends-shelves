@@ -4,13 +4,15 @@ import BookList from './components/BookList'
 import './App.css'
 import BookSearch from './components/BookSearch';
 import NavBar from './components/NavBar';
-import LoginForm from './components/LoginForm';
+import LoginRegisterForm from './components/LoginRegister/LoginRegisterForm';
 
 function App() {
   
+  //start arrays for books in database and searchquery
   const [books, setBooks] = useState([]);
   const [searchBooks, setSearchBooks] = useState([]);
 
+    //Edit book by ID
     const editBookById = (id, newTitle, newAuthor, newISBN, newBlurb) => {
 
         const updatedBooks = books.map((book) =>{
@@ -24,6 +26,7 @@ function App() {
 
     };
 
+    //function for deleting books when delete button is pressed, delete book from array
     const deleteBookById = (id) =>{
         const updatedBooks = books.filter((books) => {
             return books.id !== id;
@@ -31,6 +34,7 @@ function App() {
         setBooks(updatedBooks);
     }
 
+     //function to map titles that adhere to search query coming from booklist>booksearch 
     const searchBook = (title) =>{
       if(title && title.length > 1){
         const searchBooksTitle = books.filter((books) => {
@@ -57,6 +61,7 @@ function App() {
       
     }
 
+    //function for adding books to array when books are created
     const createBook = (title, author, ISBN, blurb) =>{
         const updatedBooks = [
             ...books, {
@@ -103,7 +108,7 @@ function App() {
     }
 
 
-    let showPage = <div><NavBar /> <LoginForm onSubmit={handleLogin} onRegister={handleRegister}/></div>
+    let showPage = <div><NavBar /> <LoginRegisterForm onSubmit={handleLogin} onRegister={handleRegister}/></div>
 
     if(showLogin == false){
       showPage = 
