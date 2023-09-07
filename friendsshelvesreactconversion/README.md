@@ -9,5 +9,4 @@ Currently, two official plugins are available:
 
 For tomorrow:
 - comment everything
-- Divide login and register in two jsx files
 - Try to get a hardcoded copy from Esther's JSON to work

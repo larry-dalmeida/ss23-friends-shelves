@@ -6,7 +6,7 @@ import logout from '../assets/images/logout.png'
 function NavBar(){
 
    
-    
+   //Show navbar 
     return(<div class= "navBar">
             <img  id='logo' src = {bookImage} />
             <a className="nav-link" href="/books"> <img  className = 'linkImage' src = {bookShelves} /> All Books</a>
