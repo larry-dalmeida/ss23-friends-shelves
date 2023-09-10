@@ -1,0 +1,111 @@
+{
+  "books": [
+    {
+      "title": "The Secret History",
+      "author": "Donna Tart",
+      "ISBN": "9780449911518",
+      "blurb": "",
+      "user": "a",
+      "id": 1
+    },
+    {
+      "title": "Jurassic Park ",
+      "author": "Michael Crichton",
+      "isbn": "9781405072960",
+      "blurb": "",
+      "id": 2
+    },
+    {
+      "title": "Dark Tower: Gunslinger",
+      "author": "Stephen King",
+      "isbn": "978-1-4447-2344-1",
+      "blurb": "",
+      "id": 3
+    },
+    {
+      "title": "The Hobbit ",
+      "author": "JRR Tolkien",
+      "ISBN": "9780006754022",
+      "blurb": "",
+      "user": "a",
+      "id": 4
+    },
+    {
+      "title": "The Hitchhicker's Guide to the Galaxy",
+      "author": "Douglas Adams",
+      "ISBN": "9781529046137",
+      "blurb": "",
+      "user": "a",
+      "id": 5
+    },
+    {
+      "title": "The Underground Railroad",
+      "author": "Colson Whitehead",
+      "ISBN": "9788494601453",
+      "blurb": "",
+      "user": "a",
+      "id": 6
+    },
+    {
+      "title": "Kindred",
+      "author": "Octavia E. Butler",
+      "ISBN": "9781472258229",
+      "blurb": "",
+      "user": "a",
+      "id": 7
+    },
+    {
+      "title": "Murder on the Orient Express",
+      "author": "Agatha Christie",
+      "ISBN": "9780007119318",
+      "blurb": "",
+      "user": "b",
+      "id": 9
+    },
+    {
+      "title": "Le Petite Prince",
+      "author": "Antoine de Saint-Exupéry",
+      "isbn": "9783140464079",
+      "blurb": "",
+      "id": 10
+    },
+    {
+      "title": "1984",
+      "author": "George Orwell",
+      "ISBN": "9780452284234",
+      "blurb": "",
+      "user": "b",
+      "id": 11
+    },
+    {
+      "title": "Norwegian Wood",
+      "author": "Haruki Muakami",
+      "ISBN": "9780375704024",
+      "blurb": "",
+      "user": "b",
+      "id": 13
+    },
+    {
+      "title": "Dune",
+      "author": "Frank Herbert",
+      "ISBN": "9780593099322",
+      "blurb": "",
+      "user": "b",
+      "id": 14
+    }
+  ],
+  "users": [
+    {
+      "username": "a",
+      "password": "a",
+      "passwordConfirm": "a",
+      "id": 1
+    },
+    {
+      "username": "b",
+      "password": "b",
+      "passwordConfirm": "b",
+      "id": 2
+    }
+  ]
+}

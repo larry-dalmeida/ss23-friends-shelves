@@ -64,8 +64,13 @@ button:focus-visible {
 }
 
 .book-list{
+  
+  margin-left: 150px;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
+  columns: 3 50px;
+  column-gap: 10px;
   
 }
 
@@ -195,5 +200,24 @@ input + label{
   width: auto;
   height: 50px;
   padding-bottom: 40px;
+
+}
+
+.bookCover{
+
+  height: 250px;
+  width: 150px;
+  border-radius: 5%;
+
+}
+
+.pageTitle{
+
+  padding: 20px;
+  position: sticky;
+  top: 0;
+  background-color: #F3EDE9;
+
+
 
 }

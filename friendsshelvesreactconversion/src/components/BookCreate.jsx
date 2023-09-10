@@ -2,11 +2,11 @@ import { useState } from 'react';
 import BookCreateForm from './BookCreateForm';
 
 
-function BookCreate({onCreate}){
+function BookCreate({user, onCreate}){
 
     //Handle submit from the bookcreate form
     const handleSubmit = (title, author, ISBN, blurb) => {
-        onCreate(title, author, ISBN, blurb); 
+        onCreate(title, author, ISBN, blurb, user); 
         setShowForm(false);
 
     };
