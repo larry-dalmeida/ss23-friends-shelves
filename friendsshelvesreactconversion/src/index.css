@@ -141,6 +141,7 @@ input + label{
 
 .navBar  a:hover {
   color: #841821;
+  cursor: pointer;
 }
 
 
