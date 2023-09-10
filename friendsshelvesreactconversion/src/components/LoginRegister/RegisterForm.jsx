@@ -28,7 +28,7 @@ function RegisterForm ({onRegister, setShowRegister}) {
 
     return (<div>
         <h3>Register Form</h3>
-        <form onRegister = {handleRegisterSubmit}>
+        <form onSubmit = {handleRegisterSubmit}>
             <p>
                 <label>Username </label>
                 <input 

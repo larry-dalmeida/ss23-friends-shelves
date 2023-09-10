@@ -1,4 +1,6 @@
-import { useState } from 'react'
+import { useState } from 'react';
+import axios from 'axios';
+import { useEffect } from 'react';
 import BookCreate from './components/BookCreate'
 import BookList from './components/BookList'
 import './App.css'
@@ -6,122 +8,167 @@ import BookSearch from './components/BookSearch';
 import NavBar from './components/NavBar';
 import LoginRegisterForm from './components/LoginRegister/LoginRegisterForm';
 
+
 function App() {
   
   //start arrays for books in database and searchquery
   const [books, setBooks] = useState([]);
   const [searchBooks, setSearchBooks] = useState([]);
+  
 
-    //Edit book by ID
-    const editBookById = (id, newTitle, newAuthor, newISBN, newBlurb) => {
+  //Register users that are registring 
+  const [users, setUsers] = useState([]);
+  const [loggedInUser, setLoggedInUser] = useState([]);
 
-        const updatedBooks = books.map((book) =>{
-            if(book.id === id){
-                return {...book, title:newTitle, author:newAuthor, ISBN: newISBN, blurb: newBlurb};
-            }
+  //Fetching books from user
+  const fetchBooks = async(showBooks) => {
+    const response = await axios.get('http://localhost:3001/books');
 
-            return book;
-        });
-        setBooks(updatedBooks);
-
-    };
-
-    //function for deleting books when delete button is pressed, delete book from array
-    const deleteBookById = (id) =>{
-        const updatedBooks = books.filter((books) => {
-            return books.id !== id;
-        });
-        setBooks(updatedBooks);
+    if(showBooks === "mine"){
+      const updatedBooks = response.data.filter((book) => {
+        return book.user === loggedInUser[0].username;
+      });
+      setBooks(updatedBooks);
     }
+    else{
+      setBooks(response.data);
+    }
+    
+  };
 
-     //function to map titles that adhere to search query coming from booklist>booksearch 
-    const searchBook = (title) =>{
-      if(title && title.length > 1){
+  const handleFetchBooks = (showBooks) =>{    
+    
+    fetchBooks(showBooks);
+    
+  };
+
+  //Edit book by ID
+  const editBookById = async (id, newTitle, newAuthor, newISBN, newBlurb) => {
+
+    const response = await axios.put(`http://localhost:3001/books/${id}`, {
+        title: newTitle,
+        author: newAuthor,
+        isbn: newISBN,
+        blurb : newBlurb
+    });
+
+    const updatedBooks = books.map((book) =>{
+        if(book.id === id){
+            return {...book, ...response.data};
+        }
+
+        return book;
+    });
+    setBooks(updatedBooks);
+
+  };
+
+  //function for deleting books when delete button is pressed, delete book from array
+  const deleteBookById = async (id) =>{
+
+      await axios.delete(`http://localhost:3001/books/${id}`);
+
+      const updatedBooks = books.filter((books) => {
+          return books.id !== id;
+      });
+      setBooks(updatedBooks);
+  }
+
+    //function to map titles that adhere to search query coming from booklist>booksearch 
+  const searchBook = (title) =>{
+    if(title && title.length > 1){
+      const searchBooksTitle = books.filter((books) => {
+        return books.title.includes(title);
+      });
+      setSearchBooks(searchBooksTitle)
+      if(searchBooksTitle.length == 0){
         const searchBooksTitle = books.filter((books) => {
-          return books.title.includes(title);
+          return books.author.includes(title);
         });
         setSearchBooks(searchBooksTitle)
+      
         if(searchBooksTitle.length == 0){
           const searchBooksTitle = books.filter((books) => {
-            return books.author.includes(title);
+            return books.ISBN.includes(title);
           });
           setSearchBooks(searchBooksTitle)
-        
-          if(searchBooksTitle.length == 0){
-            const searchBooksTitle = books.filter((books) => {
-              return books.ISBN.includes(title);
-            });
-            setSearchBooks(searchBooksTitle)
-          }
         }
       }
-      else{
-        setSearchBooks([])
-      }
+    }
+    else{
+      setSearchBooks([])
+    }
+    
+  }
+
+  //function for adding books to array when books are created
+  const createBook = async (title, author, ISBN, blurb, user) =>{
+    const response = await axios.post('http://localhost:3001/books', {title, author, ISBN, blurb, user});
+
+    const updatedBooks = [
+      ...books, response.data
+  ];
+  setBooks(updatedBooks);
+  }
+
+  //Handle login and password validation
+  const[showLogin, setShowLogin] = useState(true);
+  const[loggedIn, setLoggedIn] = useState(false);
+
+  const handleLogin = (username, password) => {
+    const searchUsers = users.filter((users) => {
+      return users.username == username && users.password == password;
+    });
+    
+    if(String(searchUsers[0].password) == String(password)){
+      setLoggedInUser(searchUsers);
+      setLoggedIn(true);
+      handleFetchBooks("mine");
+        }  
+    if(loggedIn === true){
+      setShowLogin(false);
+    }
+  };
+
+  const handleRegister = async (username, password, passwordConfirm) => {
+      const response = await axios.post('http://localhost:3001/users', {username, password, passwordConfirm});
+
+      const updatedUsers = [
+        ...users, response.data
+    ];
+    setUsers(updatedUsers);
       
-    }
+  }
 
-    //function for adding books to array when books are created
-    const createBook = (title, author, ISBN, blurb) =>{
-        const updatedBooks = [
-            ...books, {
-                id: Math.round(Math.random()*9999), 
-                title: title,
-                author: author,
-                ISBN: ISBN,
-                blurb: blurb
-            }
-        ];
-        setBooks(updatedBooks);
-    };
+  //Fetching users database
+  const fetchUsers = async() => {
+    const response = await axios.get('http://localhost:3001/users');
 
-    //Handle login and password validation
-    const[showLogin, setShowLogin] = useState(true);
-    const[loggedIn, setLoggedIn] = useState(false);
+    const updatedUsers = response.data;
+    setUsers(updatedUsers);
+  };
 
-    const handleLogin = (username, password) => {
-      const searchUsers = users.filter((users) => {
-        return users.username.includes(username);
-      });
+  useEffect (() => {
+    fetchUsers();
+  }, []);
 
-      if(String(searchUsers[0].password) == String(password)){
-        setLoggedIn(true);
-          }  
-      if(loggedIn === true){
-        setShowLogin(false);
-      }
-    };
-
-    //Register users that are registring 
-    const [users, setUsers] = useState([]);
-
-    const handleRegister = (username, password, passwordConfirm) => {
-        const updatedUsers = [
-          ...users, {
-            username: username,
-            password: password,
-            passwordConfirm: passwordConfirm
-          }
-        ];
-        setUsers(updatedUsers);
-        
-    }
+  
 
 
-    let showPage = <div><NavBar /> <LoginRegisterForm onSubmit={handleLogin} onRegister={handleRegister}/></div>
+  let showPage = <div><NavBar /> <LoginRegisterForm onSubmit={handleLogin} onRegister={handleRegister}/></div>
 
-    if(showLogin == false){
-      showPage = 
-      <div>
-        <NavBar /> 
-        <BookSearch onSearch={searchBook} />
-        <BookCreate onCreate={createBook} /> 
-        <BookList books={books} searchBooks = {searchBooks} onDelete={deleteBookById} onEdit={editBookById} onSearch={searchBook}/>
-    </div>
-    }
+  if(showLogin == false){
+    showPage = 
+    <div>
+      <NavBar handleFetchBooks = {handleFetchBooks} setShowLogin = {setShowLogin}/> 
+      <BookSearch onSearch={searchBook} />
+      <BookCreate user = {loggedInUser[0].username} onCreate={createBook} /> 
+      <BookList books={books} searchBooks = {searchBooks} onDelete={deleteBookById} onEdit={editBookById} onSearch={searchBook} user = {loggedInUser} />
+  </div>
+  }
 
-    return (showPage)
-        
+  return (showPage)
+      
 }
 
 export default App
