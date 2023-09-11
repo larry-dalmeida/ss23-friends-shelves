@@ -160,7 +160,7 @@ input + label{
 }
 
 .book-show{
-
+  width: 200px; 
   margin:10px;
 
 }
@@ -218,6 +218,7 @@ input + label{
 .pageTitle{
 
   padding: 20px;
+  margin-left: 160px;
   position: sticky;
   top: 0;
   background-color: #F3EDE9;

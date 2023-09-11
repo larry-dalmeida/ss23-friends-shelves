@@ -11,4 +11,5 @@ TODO:
 - Get alphabetic orderning
 - Get app connected to online MongoDB
 - Create lending system
+- Better navigation
 

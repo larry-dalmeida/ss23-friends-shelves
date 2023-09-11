@@ -9,17 +9,11 @@
       "id": 1
     },
     {
-      "title": "Jurassic Park ",
-      "author": "Michael Crichton",
-      "ISBN": "9781405072960",
-      "blurb": "",
-      "id": 2
-    },
-    {
       "title": "Dark Tower: Gunslinger",
       "author": "Stephen King",
       "ISBN": "978-1-4447-2344-1",
       "blurb": "",
+      "user": "a",
       "id": 3
     },
     {
