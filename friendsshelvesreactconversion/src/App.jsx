@@ -14,6 +14,7 @@ function App() {
   //start arrays for books in database and searchquery
   const [books, setBooks] = useState([]);
   const [searchBooks, setSearchBooks] = useState([]);
+  const [showBooks, setShowBooks] = useState("mine");
   
 
   //Register users that are registring 
@@ -23,6 +24,7 @@ function App() {
   //Fetching books from user
   const fetchBooks = async(showBooks) => {
     const response = await axios.get('http://localhost:3001/books');
+    setShowBooks(showBooks)
 
     if(showBooks === "mine"){
       const updatedBooks = response.data.filter((book) => {
@@ -163,7 +165,7 @@ function App() {
       <NavBar handleFetchBooks = {handleFetchBooks} setShowLogin = {setShowLogin}/> 
       <BookSearch onSearch={searchBook} />
       <BookCreate user = {loggedInUser[0].username} onCreate={createBook} /> 
-      <BookList books={books} searchBooks = {searchBooks} onDelete={deleteBookById} onEdit={editBookById} onSearch={searchBook} user = {loggedInUser} />
+      <BookList books={books} searchBooks = {searchBooks} onDelete={deleteBookById} onEdit={editBookById} onSearch={searchBook} user = {loggedInUser} showBooks = {showBooks} />
   </div>
   }
 

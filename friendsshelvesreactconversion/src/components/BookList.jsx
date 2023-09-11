@@ -1,6 +1,6 @@
 import BookShow from './BookShow'
 
-function BookList({books, searchBooks, onDelete, onEdit, onSearch, user}){
+function BookList({books, searchBooks, onDelete, onEdit, onSearch, user, showBooks}){
 
     //render all books in books array
     let renderedBooks = books.map((book) => {
@@ -14,9 +14,14 @@ function BookList({books, searchBooks, onDelete, onEdit, onSearch, user}){
         }); 
     }
     
+    let pageTitle = 'Your Bookshelf';
+
+    if(showBooks === "all"){
+        pageTitle = 'All Books';
+    }
 
     return(<div>
-            <div className = "pageTitle"><h2>Your Bookshelf</h2></div>
+            <div className = "pageTitle"><h2>{pageTitle}</h2></div>
             <div className ="book-list">{renderedBooks}</div>
         </div>
     )
