@@ -23,6 +23,7 @@ function BookShow({book, onDelete, onEdit, user}){
         setShowEdit(false);
     }
 
+
     let bookImage = 'https://covers.openlibrary.org/b/isbn/'.concat(book.ISBN,'-M.jpg');
 
     let bookInLibrary = "In Library";

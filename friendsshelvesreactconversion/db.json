@@ -11,14 +11,14 @@
     {
       "title": "Jurassic Park ",
       "author": "Michael Crichton",
-      "isbn": "9781405072960",
+      "ISBN": "9781405072960",
       "blurb": "",
       "id": 2
     },
     {
       "title": "Dark Tower: Gunslinger",
       "author": "Stephen King",
-      "isbn": "978-1-4447-2344-1",
+      "ISBN": "978-1-4447-2344-1",
       "blurb": "",
       "id": 3
     },
@@ -47,14 +47,6 @@
       "id": 6
     },
     {
-      "title": "Kindred",
-      "author": "Octavia E. Butler",
-      "ISBN": "9781472258229",
-      "blurb": "",
-      "user": "a",
-      "id": 7
-    },
-    {
       "title": "Murder on the Orient Express",
       "author": "Agatha Christie",
       "ISBN": "9780007119318",
@@ -65,7 +57,7 @@
     {
       "title": "Le Petite Prince",
       "author": "Antoine de Saint-Exupéry",
-      "isbn": "9783140464079",
+      "ISBN": "9783140464079",
       "blurb": "",
       "id": 10
     },

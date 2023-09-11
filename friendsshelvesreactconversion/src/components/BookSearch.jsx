@@ -23,11 +23,10 @@ function BookSearch({onSearch}){
         
         <form className = "searchForm">
             <p>
-                <label>Book Search</label>
                 <input 
                 type = "text"
                 placeholder = "Title, Author or ISBN" 
-                className="input" 
+                className="searchBar" 
                 value = {formData.title} 
                 onChange = {handleChange}
                 name = "title"
