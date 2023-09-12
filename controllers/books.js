@@ -1,10 +1,12 @@
 const Book = require('../models/book');
 
 module.exports.index = async (req, res) => {
-    const genres = ['fantasy', 'romance', 'crime'];
-    const filters = ['title', 'author', 'isbn'];
+    // const genres = ['fantasy', 'romance', 'crime'];
+    // const filters = ['title', 'author', 'isbn'];
+    // const books = await Book.find({}).populate('owner').sort({ title: 1 });
+    // res.render('books/all', { books, genres, filters });
     const books = await Book.find({}).populate('owner').sort({ title: 1 });
-    res.render('books/all', { books, genres, filters });
+    res.send(books);
 };
 
 module.exports.myIndex = async (req, res) => {

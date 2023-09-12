@@ -7,7 +7,9 @@ const { isLoggedIn, validateBook, isOwner } = require('../middleware');
 
 
 router.route('/')
-    .get(isLoggedIn, catchAsync(books.index))
+    .get(
+        // isLoggedIn,
+        catchAsync(books.index))
     .post(isLoggedIn, validateBook, catchAsync(books.createBook));
 
 router.get('/mine', isLoggedIn, catchAsync(books.myIndex));
