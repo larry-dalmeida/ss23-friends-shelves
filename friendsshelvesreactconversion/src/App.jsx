@@ -25,8 +25,8 @@ function App() {
   //Esther: make a get request depending on showBooks is mine or not and get the books from DB then 
   // less trafic and the routes are already there: http://localhost:8080/books and  http://localhost:8080/books/mine
   const fetchBooks = async (showBooks) => {
-    const response = await axios.get('http://localhost:3001/books');
-    // const response = await axios.get('http://localhost:8080/books');
+    // const response = await axios.get('http://localhost:3001/books');
+    const response = await axios.get('http://localhost:8080/books');
     console.log(response);
     setShowBooks(showBooks)
 
