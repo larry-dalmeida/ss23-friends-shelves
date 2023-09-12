@@ -26,11 +26,13 @@ function App() {
   // less trafic and the routes are already there: http://localhost:8080/books and  http://localhost:8080/books/mine
   const fetchBooks = async (showBooks) => {
     const response = await axios.get('http://localhost:3001/books');
+    // const response = await axios.get('http://localhost:8080/books');
+    console.log(response);
     setShowBooks(showBooks)
 
     if (showBooks === "mine") {
       const updatedBooks = response.data.filter((book) => {
-        return book.user === loggedInUser[0].username;
+        return book.owner._id === loggedInUser[0]._id;
       });
       setBooks(updatedBooks);
     }
@@ -61,7 +63,7 @@ function App() {
     });
 
     const updatedBooks = books.map((book) => {
-      if (book.id === id) {
+      if (book._id === id) {
         return { ...book, ...response.data };
       }
 
@@ -78,7 +80,7 @@ function App() {
     await axios.delete(`http://localhost:3001/books/${id}`);
 
     const updatedBooks = books.filter((books) => {
-      return books.id !== id;
+      return books._id !== id;
     });
     setBooks(updatedBooks);
   }
