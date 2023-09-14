@@ -25,21 +25,24 @@ function App() {
   //Esther: make a get request depending on showBooks is mine or not and get the books from DB then 
   // less trafic and the routes are already there: http://localhost:8080/books and  http://localhost:8080/books/mine
   const fetchBooks = async (showBooks) => {
-    // const response = await axios.get('http://localhost:3001/books');
-    const response = await axios.get('http://localhost:8080/books');
-    console.log(response);
-    setShowBooks(showBooks)
+    try {
+      // const response = await axios.get('http://localhost:3001/books');
+      const response = await axios.get('http://localhost:8080/books');
+      console.log(response);
+      setShowBooks(showBooks)
 
-    if (showBooks === "mine") {
-      const updatedBooks = response.data.filter((book) => {
-        return book.owner._id === loggedInUser[0]._id;
-      });
-      setBooks(updatedBooks);
-    }
-    else {
-      setBooks(response.data);
-    }
-
+      if (showBooks === "mine") {
+        const updatedBooks = response.data.filter((book) => {
+          return book.owner._id === loggedInUser[0]._id;
+        });
+        setBooks(updatedBooks);
+      }
+      else {
+        setBooks(response.data);
+      }
+    } catch (e) {
+      console.log(e)
+    };
   };
 
   const handleFetchBooks = (showBooks) => {
@@ -150,8 +153,9 @@ function App() {
 
   //Esther: On the backend there is a post route to http://localhost:8080/register where username, email and password should be sent
   // as a response all necessary session detail should be sent back to the frontend
-  const handleRegister = async (username, password, passwordConfirm) => {
-    const response = await axios.post('http://localhost:3001/users', { username, password, passwordConfirm });
+  const handleRegister = async (username, email, password) => {
+    // const response = await axios.post('http://localhost:3001/users', { username, password, passwordConfirm });
+    const response = await axios.post('http://localhost:8080/register', { username, email, password });
 
     const updatedUsers = [
       ...users, response.data
