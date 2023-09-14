@@ -21,7 +21,6 @@ function RegisterForm({ onRegister, setShowRegister }) {
         event.preventDefault();
         onRegister(registerFormData.username, registerFormData.email, registerFormData.password);
         setShowRegister(false);
-        console.log(registerFormData.password)
     };
 
     //Register form
