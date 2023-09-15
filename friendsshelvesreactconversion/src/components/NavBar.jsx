@@ -5,7 +5,7 @@ import logout from '../assets/images/logout.png';
 import axios from 'axios';
 
 // Esther to Alex: I guess its on your list to not show the nav bar items when someone is 
-function NavBar({ handleFetchBooks, setShowLogin }) {
+function NavBar({ handleFetchBooks, handleLogout }) {
 
 
         const handleShowAllBooks = () => {
@@ -18,10 +18,8 @@ function NavBar({ handleFetchBooks, setShowLogin }) {
 
         // Esther to Alex: can this logic be moved to the App.jsx / some middleware file, that holds all the functions? 
         // then we don't need axios in this one any more
-        const handleLogout = async () => {
-                const response = await axios.get('http://localhost:8080/logout');
-                console.log(response.data);
-                setShowLogin(true);
+        const clickLogout = async () => {
+                handleLogout();
         };
 
         //Show navbar 
@@ -29,7 +27,7 @@ function NavBar({ handleFetchBooks, setShowLogin }) {
                 <img id='logo' src={bookImage} />
                 <a className="nav-link" onClick={handleShowAllBooks}> <img className='linkImage' src={bookShelves} /> All Books</a>
                 <a className="nav-link" onClick={handleShowMyBooks}> <img className='linkImage' src={bookImage} /> My Bookshelf</a>
-                <a className="nav-link" onClick={handleLogout}> <img className='linkImage' src={logout} /> Logout</a>
+                <a className="nav-link" onClick={clickLogout}> <img className='linkImage' src={logout} /> Logout</a>
         </div>)
 
 }
