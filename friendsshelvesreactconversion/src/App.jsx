@@ -1,6 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useEffect } from 'react';
 import BookCreate from './components/BookCreate'
 import BookList from './components/BookList'
 import './App.css'
@@ -18,7 +17,7 @@ function App() {
 
 
   //Register users that are registring 
-  const [users, setUsers] = useState([]);
+  // const [users, setUsers] = useState([]);
   const [loggedInUser, setLoggedInUser] = useState([]);
 
   //Fetching books from user
@@ -127,58 +126,49 @@ function App() {
   }
 
   //Handle login and password validation
-  //Esther: On the backend there is a post route to http://localhost:8080/login where username and password should be sent to
-  // the backend could then after sucessful authentification send back the needed userinfo + needed sessiondata, so that 
-  // upon refreshing the user is not logged out
-  // talking of Session data: there should be a function running in the beginning of every page refresh that checks if the user is
+  //Esther:  to be done: send not only user data, but session cookie
+  // Esther to Alex: talking of Session data: there should be a function running in the beginning of every page refresh that checks if the user is
   // in an ongoing session and depdending on that he should get the user data from the server and show the content 
   // or ask for signup previous to showing the content
   const [showLogin, setShowLogin] = useState(true);
   const [loggedIn, setLoggedIn] = useState(false);
 
-  const handleLogin = (username, password) => {
-    const searchUsers = users.filter((users) => {
-      return users.username == username && users.password == password;
-    });
+  const handleLogin = async (username, password) => {
+    const response = await axios.post('http://localhost:8080/login', { username, password });
+    const user = response.data;
 
-    if (String(searchUsers[0].password) == String(password)) {
-      setLoggedInUser(searchUsers);
+    if (user) {
+      setLoggedInUser(user);
       setLoggedIn(true);
       handleFetchBooks("mine");
     }
     if (loggedIn === true) {
       setShowLogin(false);
     }
+
   };
 
-  //Esther: On the backend there is a post route to http://localhost:8080/register where username, email and password should be sent
-  // as a response all necessary session detail should be sent back to the frontend
+  //Esther: to be done: send not only user data, but session cookie
   const handleRegister = async (username, email, password) => {
     // const response = await axios.post('http://localhost:3001/users', { username, password, passwordConfirm });
-    const response = await axios.post('http://localhost:8080/register', { username, email, password });
+    const response = await axios.post('http://localhost:8080/register', { username, email, password })
 
-    const updatedUsers = [
-      ...users, response.data
-    ];
-    setUsers(updatedUsers);
+    // Esther to Alex: this pice of code runs fine, as the react developer tools show. In my opinion it is a poor experience
+    // that the user has to register and then log in again, so on the backend I create the new user, then query the db
+    // for the new user and send it back to you, so it can be stored as the loggedInUser
+    // The problem: as for the Login button, it needs to be clicked twice - here we don't have a button to click a second time,
+    // so it won't show the content we want it to show. Maybe redirecting to routes will fix this, so that after all the login and
+    // register logic we redirect to books/mine
+    if (response.data) {
+      setLoggedInUser(response.data);
+      setLoggedIn(true);
+      handleFetchBooks("mine");
+    }
+    if (loggedIn === true) {
+      setShowLogin(false);
+    }
 
   }
-
-
-  //Fetching users database
-  //Esther: this should after the session part works not be necessary any more :D
-  const fetchUsers = async () => {
-    const response = await axios.get('http://localhost:3001/users');
-
-    const updatedUsers = response.data;
-    setUsers(updatedUsers);
-  };
-
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
-
 
 
   let showPage = <div><NavBar /> <LoginRegisterForm onSubmit={handleLogin} onRegister={handleRegister} /></div>
