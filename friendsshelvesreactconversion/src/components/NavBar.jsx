@@ -2,8 +2,9 @@ import { useState } from 'react';
 import bookImage from '../assets/images/book.png';
 import bookShelves from '../assets/images/bookshelves.png';
 import logout from '../assets/images/logout.png';
+import axios from 'axios';
 
-
+// Esther to Alex: I guess its on your list to not show the nav bar items when someone is 
 function NavBar({ handleFetchBooks, setShowLogin }) {
 
 
@@ -15,8 +16,11 @@ function NavBar({ handleFetchBooks, setShowLogin }) {
                 handleFetchBooks("mine");
         };
 
-        // Esther: there should be a function for this in App.jsx with a get request to http://localhost:8080/
-        const handleLogout = () => {
+        // Esther to Alex: can this logic be moved to the App.jsx / some middleware file, that holds all the functions? 
+        // then we don't need axios in this one any more
+        const handleLogout = async () => {
+                const response = await axios.get('http://localhost:8080/logout');
+                console.log(response.data);
                 setShowLogin(true);
         };
 
