@@ -21,34 +21,41 @@ function App() {
   const [loggedInUser, setLoggedInUser] = useState([]);
 
   //Fetching books from user
-  //Esther: make a get request depending on showBooks is mine or not and get the books from DB then 
-  // less trafic and the routes are already there: http://localhost:8080/books and  http://localhost:8080/books/mine
-  const fetchBooks = async (showBooks) => {
+  const fetchBooksMine = async (loggedInUser) => {
     try {
       // const response = await axios.get('http://localhost:3001/books');
-      const response = await axios.get('http://localhost:8080/books');
-      console.log(response);
-      setShowBooks(showBooks)
+      const response = await axios.post('http://localhost:8080/books/mine', loggedInUser);
+      setBooks(response.data);
+      // console.log(response);
+    } catch (e) {
+      console.log(e)
+    };
+  };
+  const fetchBooksAll = async () => {
+    try {
+      // const response = await axios.get('http://localhost:3001/books');
 
-      if (showBooks === "mine") {
-        const updatedBooks = response.data.filter((book) => {
-          return book.owner._id === loggedInUser[0]._id;
-        });
-        setBooks(updatedBooks);
-      }
-      else {
-        setBooks(response.data);
-      }
+      const response = await axios.get('http://localhost:8080/books');
+      setBooks(response.data);
+      // console.log(response);
     } catch (e) {
       console.log(e)
     };
   };
 
-  const handleFetchBooks = (showBooks) => {
 
-    fetchBooks(showBooks);
+  const handleFetchBooks = (showIdentifier, loggedInUser) => {
+    setShowBooks(showIdentifier);
+
+    if (showIdentifier === "mine") {
+      fetchBooksMine(loggedInUser);
+    }
+    if (showIdentifier === "all") {
+      fetchBooksAll();
+    }
 
   };
+
 
   //Edit book by ID
   //Esther: put route is `http://localhost:8080/books/${id}`
@@ -138,7 +145,8 @@ function App() {
   };
   useEffect(() => {
     if (loggedIn === true) {
-      handleFetchBooks("mine");
+      // console.log("login?", loggedInUser);
+      handleFetchBooks("mine", loggedInUser);
     }
   }, [loggedIn])
 
@@ -168,7 +176,6 @@ function App() {
     setLoggedIn(false);
     setLoggedInUser([]);
     setBooks([]);
-    setShowBooks("mine");
   }
 
   let showPage = <div><NavBar /> <LoginRegisterForm onSubmit={handleLogin} onRegister={handleRegister} /></div>
@@ -176,7 +183,7 @@ function App() {
   if (showLogin == false) {
     showPage =
       <div>
-        <NavBar handleFetchBooks={handleFetchBooks} handleLogout={handleLogout} />
+        <NavBar loggedInUser={loggedInUser} handleFetchBooks={handleFetchBooks} handleLogout={handleLogout} />
         <BookSearch onSearch={searchBook} />
         <BookCreate user={loggedInUser[0].username} onCreate={createBook} />
         <BookList books={books} searchBooks={searchBooks} onDelete={deleteBookById} onEdit={editBookById} onSearch={searchBook} user={loggedInUser} showBooks={showBooks} />

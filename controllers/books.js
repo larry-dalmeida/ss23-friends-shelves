@@ -9,10 +9,17 @@ module.exports.index = async (req, res) => {
     res.send(books);
 };
 
+// rewrite with react: 
 module.exports.myIndex = async (req, res) => {
-    const currentUser = req.user._id;
-    const mybooks = await Book.find({ owner: currentUser }).populate('owner').sort({ title: 1 });
-    res.render('books/mine', { mybooks })
+    // ejs version: 
+    // const currentUser = req.user._id;
+    // const books = await Book.find({ owner: currentUser }).populate('owner').sort({ title: 1 });
+    // res.render('books/mine', { books });
+    // react version:
+    const currentUser = req.body[0]._id;
+    // const currentUser = req.user._id;
+    const books = await Book.find({ owner: currentUser }).populate('owner').sort({ title: 1 });
+    res.send(books);
 };
 
 module.exports.search = async (req, res) => {
