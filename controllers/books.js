@@ -36,11 +36,17 @@ module.exports.renderNewForm = (req, res) => {
 };
 
 module.exports.createBook = async (req, res, next) => {
+    // ejs version: 
+    // const book = new Book(req.body.book);
+    // book.owner = req.user._id;
+    // await book.save();
+    // req.flash('success', 'You successfully created a new book!');
+    // res.redirect(`/books/${book._id}`);
+    // react version
     const book = new Book(req.body.book);
-    book.owner = req.user._id;
+    book.owner = req.body.owner;
     await book.save();
-    req.flash('success', 'You successfully created a new book!');
-    res.redirect(`/books/${book._id}`);
+    res.send(book)
 };
 
 module.exports.showBook = async (req, res) => {
@@ -67,17 +73,30 @@ module.exports.renderEditForm = async (req, res) => {
 };
 
 module.exports.updateBook = async (req, res) => {
+    // console.log(req.params);
+    // console.log(req.body);
     const { id } = req.params;
-    const book = await Book.findByIdAndUpdate(id, { ...req.body.book });
-    req.flash('success', 'Successfully updated this book!');
-    res.redirect(`/books/${book._id}`)
+    await Book.findByIdAndUpdate(id, { ...req.body.book });
+    const book = await Book.findOne({ _id: id }).populate('owner');
+    // req.flash('success', 'Successfully updated this book!');
+    // res.redirect(`/books/${book._id}`)
+    // res.send(`you made it to update book ${book.title}`);
+    res.send(book);
 };
 
 module.exports.deleteBook = async (req, res) => {
+    // console.log(req.params);
+    // res.send("got delete request");
+    // ejs version:
+    // const { id } = req.params;
+    // await Book.findByIdAndDelete(id);
+    // req.flash('success', 'Successfully deleted a book!');
+    // res.redirect('/books');
+    // react version:
+    // console.log(req.body);
     const { id } = req.params;
     await Book.findByIdAndDelete(id);
-    req.flash('success', 'Successfully deleted a book!');
-    res.redirect('/books');
+    res.send('Successfully deleted a book!');
 };
 
 
