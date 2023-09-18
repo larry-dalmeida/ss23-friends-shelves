@@ -23,21 +23,16 @@ function App() {
   //Fetching books from user
   const fetchBooksMine = async (loggedInUser) => {
     try {
-      // const response = await axios.get('http://localhost:3001/books');
       const response = await axios.post('http://localhost:8080/books/mine', loggedInUser);
       setBooks(response.data);
-      // console.log(response);
     } catch (e) {
       console.log(e)
     };
   };
   const fetchBooksAll = async () => {
     try {
-      // const response = await axios.get('http://localhost:3001/books');
-
       const response = await axios.get('http://localhost:8080/books');
       setBooks(response.data);
-      // console.log(response);
     } catch (e) {
       console.log(e)
     };
@@ -58,40 +53,53 @@ function App() {
 
 
   //Edit book by ID
-  //Esther: put route is `http://localhost:8080/books/${id}`
-  // I guess just sending the final state parameters of the form to the route should be sufficient to do the rest on the server side
-  // afterwards I would go for a new db get request to http://localhost:8080/books to setBooks
-  // thats things that don't need to be done by logic on the frontend I think - applies for further functions too
-  const editBookById = async (id, newTitle, newAuthor, newISBN, newBlurb) => {
+  const editBookById = async (id, newTitle, newAuthor, newISBN, newBlurb, user) => {
+    try {
+      const owner = user[0]._id;
+      const input = {
+        book: {
+          title: newTitle,
+          author: newAuthor,
+          image: "https://tse1.explicit.bing.net/th?id=OIP.TF-ZDchnQgWskBRH8ZNu1gHaI6&pid=Api",
+          isbn: newISBN,
+          blurb: newBlurb
+        },
+        owner
+      };
+      const response = await axios.put(`http://localhost:8080/books/${id}`, input);
+      console.log(response.data);
+      // Esther to Alex: better get new axios request form db/ fetch books (mine/all) depending on where the user currently is
+      // current bug: the old version of the book is still in state and won't change
+      const updatedBooks = books.map((book) => {
+        if (book._id === id) {
+          return { ...response.data };
+        }
+        return book;
+      });
+      setBooks(updatedBooks);
 
-    const response = await axios.put(`http://localhost:3001/books/${id}`, {
-      title: newTitle,
-      author: newAuthor,
-      isbn: newISBN,
-      blurb: newBlurb
-    });
-
-    const updatedBooks = books.map((book) => {
-      if (book._id === id) {
-        return { ...book, ...response.data };
-      }
-
-      return book;
-    });
-    setBooks(updatedBooks);
-
+    } catch (e) {
+      console.log(e)
+    };
   };
+
 
   //function for deleting books when delete button is pressed, delete book from array
   //Esther: delete route is `http://localhost:8080/books/${id}`
-  const deleteBookById = async (id) => {
+  const deleteBookById = async (id, userId) => {
+    try {
+      // Esther: with session userId should be sent through to toggle on isOwner in book routes
+      // console.log(userId);
+      await axios.delete(`http://localhost:8080/books/${id}`);
 
-    await axios.delete(`http://localhost:3001/books/${id}`);
-
-    const updatedBooks = books.filter((books) => {
-      return books._id !== id;
-    });
-    setBooks(updatedBooks);
+      // Esther to Alex: better get new axios request form db/ fetch books (mine/all) depending on where the user currently is
+      const updatedBooks = books.filter((books) => {
+        return books._id !== id;
+      });
+      setBooks(updatedBooks);
+    } catch (e) {
+      console.log(e)
+    };
   }
 
   //function to map titles that adhere to search query coming from booklist>booksearch 
@@ -122,14 +130,25 @@ function App() {
   }
 
   //function for adding books to array when books are created
-  //Esther: post route is http://localhost:8080/books
-  const createBook = async (title, author, ISBN, blurb, user) => {
-    const response = await axios.post('http://localhost:3001/books', { title, author, ISBN, blurb, user });
+  const createBook = async (title, author, isbn, blurb, user) => {
+    try {
+      const owner = user[0]._id;
+      const input = {
+        book: { title, author, image: "https://tse1.explicit.bing.net/th?id=OIP.TF-ZDchnQgWskBRH8ZNu1gHaI6&pid=Api", isbn, blurb },
+        owner
+      };
+      const response = await axios.post('http://localhost:8080/books',
+        input);
 
-    const updatedBooks = [
-      ...books, response.data
-    ];
-    setBooks(updatedBooks);
+      // Esther to Alex: better get new axios request form db/ fetch books (mine/all) depending on where the user currently is
+      // this should also get rid of the bug, that the buttons don't show right away
+      const updatedBooks = [
+        ...books, response.data
+      ];
+      setBooks(updatedBooks);
+    } catch (e) {
+      console.log(e)
+    };
   }
 
   //Handle login and password validation
@@ -145,7 +164,6 @@ function App() {
   };
   useEffect(() => {
     if (loggedIn === true) {
-      // console.log("login?", loggedInUser);
       handleFetchBooks("mine", loggedInUser);
     }
   }, [loggedIn])
@@ -162,7 +180,6 @@ function App() {
 
   //Esther: to be done: send not only user data, but session cookie
   const handleRegister = async (username, email, password) => {
-    // const response = await axios.post('http://localhost:3001/users', { username, password, passwordConfirm });
     const response = await axios.post('http://localhost:8080/register', { username, email, password })
     const user = response.data;
     userLoginSateChanges(user);
@@ -185,7 +202,7 @@ function App() {
       <div>
         <NavBar loggedInUser={loggedInUser} handleFetchBooks={handleFetchBooks} handleLogout={handleLogout} />
         <BookSearch onSearch={searchBook} />
-        <BookCreate user={loggedInUser[0].username} onCreate={createBook} />
+        <BookCreate user={loggedInUser} onCreate={createBook} />
         <BookList books={books} searchBooks={searchBooks} onDelete={deleteBookById} onEdit={editBookById} onSearch={searchBook} user={loggedInUser} showBooks={showBooks} />
       </div>
   }

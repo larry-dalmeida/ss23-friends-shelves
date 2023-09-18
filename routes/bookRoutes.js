@@ -10,20 +10,40 @@ router.route('/')
     .get(
         // isLoggedIn,
         catchAsync(books.index))
-    .post(isLoggedIn, validateBook, catchAsync(books.createBook));
+    .post(
+        // isLoggedIn,
+        validateBook,
+        catchAsync(books.createBook));
 
-router.get('/mine', isLoggedIn, catchAsync(books.myIndex));
+router.post('/mine',
+    // isLoggedIn,
+    catchAsync(books.myIndex));
 
-router.get('/search', isLoggedIn, catchAsync(books.search));
+router.get('/search',
+    // isLoggedIn,
+    catchAsync(books.search));
 
-router.get('/new', isLoggedIn, books.renderNewForm);
+router.get('/new',
+    // isLoggedIn,
+    books.renderNewForm);
 
 router.route('/:id')
-    .get(isLoggedIn, catchAsync(books.showBook))
-    .put(isLoggedIn, isOwner, validateBook, catchAsync(books.updateBook))
-    .delete(isLoggedIn, isOwner, catchAsync(books.deleteBook));
+    .get(
+        // isLoggedIn,
+        catchAsync(books.showBook))
+    .put(
+        // isLoggedIn,
+        // isOwner,
+        validateBook,
+        catchAsync(books.updateBook))
+    .delete(
+        // isLoggedIn,
+        // isOwner,
+        catchAsync(books.deleteBook));
 
-router.get('/:id/edit', isLoggedIn, isOwner, catchAsync(books.renderEditForm));
+router.get('/:id/edit',
+    // isLoggedIn,
+    isOwner, catchAsync(books.renderEditForm));
 
 
 module.exports = router;

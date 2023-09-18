@@ -9,7 +9,7 @@ function BookShow({ book, onDelete, onEdit, user }) {
     const [showEdit, setShowEdit] = useState(false);
 
     const handleDeleteClick = () => {
-        onDelete(book._id);
+        onDelete(book._id, user[0]._id);
     }
 
     const handleEditClick = () => {
@@ -17,9 +17,9 @@ function BookShow({ book, onDelete, onEdit, user }) {
     };
 
     //Handle submissions for edits
-    const handleSubmit = (id, newTitle, newAuthor, newISBN, newImage, newBlurb) => {
+    const handleSubmit = (id, newTitle, newAuthor, newISBN, newImage, newBlurb, user) => {
 
-        onEdit(id, newTitle, newAuthor, newISBN, newImage, newBlurb);
+        onEdit(id, newTitle, newAuthor, newISBN, newImage, newBlurb, user);
         setShowEdit(false);
     }
 
@@ -64,7 +64,7 @@ function BookShow({ book, onDelete, onEdit, user }) {
 
     //if edit button has been pressed, show edit menu for set book
     if (showEdit) {
-        content = <BookEdit onSubmit={handleSubmit} book={book} />;
+        content = <BookEdit onSubmit={handleSubmit} book={book} user={user} />;
     }
 
     //Show book or edit menu for each book
