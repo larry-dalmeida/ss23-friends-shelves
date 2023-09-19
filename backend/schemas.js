@@ -7,8 +7,7 @@ module.exports.bookSchema = Joi.object({
         image: Joi.string().required(),
         isbn: Joi.string().required(),
         blurb: Joi.string().required(),
-    }).required(),
-    owner: Joi.string().required()
+    }).required()
 });
 
 module.exports.reviewSchema = Joi.object({

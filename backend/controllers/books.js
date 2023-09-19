@@ -8,8 +8,7 @@ module.exports.index = async (req, res) => {
 
 // react version of: send all books of a user in the db to FE
 module.exports.myIndex = async (req, res) => {
-    const currentUser = req.body[0]._id;
-    // const currentUser = req.user._id;
+    const currentUser = req.user._id;
     const books = await Book.find({ owner: currentUser }).populate('owner').sort({ title: 1 });
     res.send(books);
 };
@@ -18,8 +17,7 @@ module.exports.myIndex = async (req, res) => {
 // react version of: post request handeling for a new book 
 module.exports.createBook = async (req, res, next) => {
     const book = new Book(req.body.book);
-    book.owner = req.body.owner;
-    // book.owner = req.user._id;
+    book.owner = req.user._id;
     await book.save();
     // req.flash('success', 'Successfully created a new book!');
     res.send(book)

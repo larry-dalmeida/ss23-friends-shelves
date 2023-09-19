@@ -8,30 +8,30 @@ const { isLoggedIn, validateBook, isOwner } = require('../middleware');
 
 router.route('/')
     .get(
-        // isLoggedIn,
+        isLoggedIn,
         catchAsync(books.index))
     .post(
-        // isLoggedIn,
+        isLoggedIn,
         validateBook,
         catchAsync(books.createBook));
 
-router.post('/mine',
-    // isLoggedIn,
+router.get('/mine',
+    isLoggedIn,
     catchAsync(books.myIndex));
 
 // Esther: get is not currently used, but should be useful once Alex established a show page for single books
 router.route('/:id')
     .get(
-        // isLoggedIn,
+        isLoggedIn,
         catchAsync(books.showBook))
     .put(
-        // isLoggedIn,
-        // isOwner,
+        isLoggedIn,
+        isOwner,
         validateBook,
         catchAsync(books.updateBook))
     .delete(
-        // isLoggedIn,
-        // isOwner,
+        isLoggedIn,
+        isOwner,
         catchAsync(books.deleteBook));
 
 module.exports = router;

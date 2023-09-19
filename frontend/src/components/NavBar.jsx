@@ -5,7 +5,7 @@ import logout from '../assets/images/logout.png';
 import axios from 'axios';
 
 // Esther to Alex: I guess its on your list to not show the nav bar items when someone is 
-function NavBar({ loggedInUser, handleFetchBooks, handleLogout }) {
+function NavBar({ handleFetchBooks, handleLogout }) {
 
 
         const handleShowAllBooks = () => {
@@ -13,7 +13,7 @@ function NavBar({ loggedInUser, handleFetchBooks, handleLogout }) {
         };
 
         const handleShowMyBooks = () => {
-                handleFetchBooks("mine", loggedInUser);
+                handleFetchBooks("mine");
         };
 
         // Esther to Alex: can this logic be moved to the App.jsx / some middleware file, that holds all the functions? 

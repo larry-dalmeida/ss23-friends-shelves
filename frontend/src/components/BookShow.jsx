@@ -9,7 +9,7 @@ function BookShow({ book, onDelete, onEdit, user }) {
     const [showEdit, setShowEdit] = useState(false);
 
     const handleDeleteClick = () => {
-        onDelete(book._id, user[0]._id);
+        onDelete(book._id);
     }
 
     const handleEditClick = () => {
@@ -17,9 +17,9 @@ function BookShow({ book, onDelete, onEdit, user }) {
     };
 
     //Handle submissions for edits
-    const handleSubmit = (id, newTitle, newAuthor, newISBN, newImage, newBlurb, user) => {
+    const handleSubmit = (id, newTitle, newAuthor, newISBN, newImage, newBlurb) => {
 
-        onEdit(id, newTitle, newAuthor, newISBN, newImage, newBlurb, user);
+        onEdit(id, newTitle, newAuthor, newISBN, newImage, newBlurb);
         setShowEdit(false);
     }
 
