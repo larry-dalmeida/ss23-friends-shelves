@@ -21,41 +21,20 @@ function App() {
   const [loggedInUser, setLoggedInUser] = useState([]);
 
   //Fetching books from user
-  const fetchBooksMine = async (loggedInUser) => {
-    try {
-      const response = await axios.post('http://localhost:8080/books/mine', loggedInUser);
-      setBooks(response.data);
-    } catch (e) {
-      console.log(e)
-    };
-  };
-  const fetchBooksAll = async () => {
-    try {
-      const response = await axios.get('http://localhost:8080/books');
-      setBooks(response.data);
-    } catch (e) {
-      console.log(e)
-    };
-  };
-
-
-  const handleFetchBooks = (showIdentifier, loggedInUser) => {
+  const handleFetchBooks = async (showIdentifier) => {
     setShowBooks(showIdentifier);
-
-    if (showIdentifier === "mine") {
-      fetchBooksMine(loggedInUser);
-    }
-    if (showIdentifier === "all") {
-      fetchBooksAll();
-    }
-
+    try {
+      const response = await axios.get(`http://localhost:8080/books/${showIdentifier === 'mine' ? 'mine' : ''}`, { withCredentials: true });
+      setBooks(response.data);
+    } catch (e) {
+      console.log(e)
+    };
   };
 
 
   //Edit book by ID
-  const editBookById = async (id, newTitle, newAuthor, newISBN, newBlurb, user) => {
+  const editBookById = async (id, newTitle, newAuthor, newISBN, newBlurb) => {
     try {
-      const owner = user[0]._id;
       const input = {
         book: {
           title: newTitle,
@@ -63,10 +42,9 @@ function App() {
           image: "https://tse1.explicit.bing.net/th?id=OIP.TF-ZDchnQgWskBRH8ZNu1gHaI6&pid=Api",
           isbn: newISBN,
           blurb: newBlurb
-        },
-        owner
+        }
       };
-      const response = await axios.put(`http://localhost:8080/books/${id}`, input);
+      const response = await axios.put(`http://localhost:8080/books/${id}`, input, { withCredentials: true });
 
       // Esther to Alex: better get new axios request form db/ fetch books (mine/all) depending on where the user currently is
       // current bug: the old version of the book is still in state and won't change
@@ -83,14 +61,29 @@ function App() {
     };
   };
 
-
-  //function for deleting books when delete button is pressed, delete book from array
-  //Esther: delete route is `http://localhost:8080/books/${id}`
-  const deleteBookById = async (id, userId) => {
+  //function on clicking Add a Book
+  const createBook = async (title, author, isbn, blurb) => {
     try {
-      // Esther: with session userId should be sent through to toggle on isOwner in book routes
-      // console.log(userId);
-      await axios.delete(`http://localhost:8080/books/${id}`);
+      const input = {
+        book: { title, author, image: "https://tse1.explicit.bing.net/th?id=OIP.TF-ZDchnQgWskBRH8ZNu1gHaI6&pid=Api", isbn, blurb }
+      };
+      const response = await axios.post('http://localhost:8080/books', input, { withCredentials: true });
+
+      // Esther to Alex: better get new axios request form db/ fetch books (mine/all) depending on where the user currently is
+      // this should also get rid of the bug, that the buttons don't show right away
+      const updatedBooks = [
+        ...books, response.data
+      ];
+      setBooks(updatedBooks);
+    } catch (e) {
+      console.log(e)
+    };
+  }
+
+  //function on Clicking Delete a Book
+  const deleteBookById = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8080/books/${id}`, { withCredentials: true });
 
       // Esther to Alex: better get new axios request form db/ fetch books (mine/all) depending on where the user currently is
       const updatedBooks = books.filter((books) => {
@@ -129,28 +122,6 @@ function App() {
 
   }
 
-  //function for adding books to array when books are created
-  const createBook = async (title, author, isbn, blurb, user) => {
-    try {
-      const owner = user[0]._id;
-      const input = {
-        book: { title, author, image: "https://tse1.explicit.bing.net/th?id=OIP.TF-ZDchnQgWskBRH8ZNu1gHaI6&pid=Api", isbn, blurb },
-        owner
-      };
-      const response = await axios.post('http://localhost:8080/books',
-        input);
-
-      // Esther to Alex: better get new axios request form db/ fetch books (mine/all) depending on where the user currently is
-      // this should also get rid of the bug, that the buttons don't show right away
-      const updatedBooks = [
-        ...books, response.data
-      ];
-      setBooks(updatedBooks);
-    } catch (e) {
-      console.log(e)
-    };
-  }
-
   //Handle login and password validation
   const [showLogin, setShowLogin] = useState(true);
   const [loggedIn, setLoggedIn] = useState(false);
@@ -164,31 +135,29 @@ function App() {
   };
   useEffect(() => {
     if (loggedIn === true) {
-      handleFetchBooks("mine", loggedInUser);
+      handleFetchBooks("mine");
     }
   }, [loggedIn])
 
-  //Esther:  to be done: send not only user data, but session cookie
-  // Esther to Alex: talking of Session data: there should be a function running in the beginning of every page refresh that checks if the user is
-  // in an ongoing session and depdending on that he should get the user data from the server and show the content 
-  // or ask for signup previous to showing the content
+  // Esther to Alex: the session is now woking. With it on every request I can access the req.user object with the user _id username and email
+  // you could check if there is a way for you to get the userdata you need for display or logic from the session or if its common that 
+  // this info is sent from the BE and than, as we do it currently, saved to a State
   const handleLogin = async (username, password) => {
-    const response = await axios.post('http://localhost:8080/login', { username, password });
+    const response = await axios.post('http://localhost:8080/login', { username, password }, { withCredentials: true });
     const user = response.data;
     userLoginSateChanges(user);
   };
 
-  //Esther: to be done: send not only user data, but session cookie
   const handleRegister = async (username, email, password) => {
-    const response = await axios.post('http://localhost:8080/register', { username, email, password })
+    const response = await axios.post('http://localhost:8080/register', { username, email, password }, { withCredentials: true })
     const user = response.data;
     userLoginSateChanges(user);
   }
 
   // Logout function to set all States back to 0
   const handleLogout = async () => {
-    const response = await axios.get('http://localhost:8080/logout');
-    // console.log(response.data);
+    const response = await axios.get('http://localhost:8080/logout', { withCredentials: true });
+    // console.log(response);
     setShowLogin(true);
     setLoggedIn(false);
     setLoggedInUser([]);
@@ -200,9 +169,9 @@ function App() {
   if (showLogin == false) {
     showPage =
       <div>
-        <NavBar loggedInUser={loggedInUser} handleFetchBooks={handleFetchBooks} handleLogout={handleLogout} />
+        <NavBar handleFetchBooks={handleFetchBooks} handleLogout={handleLogout} />
         <BookSearch onSearch={searchBook} />
-        <BookCreate user={loggedInUser} onCreate={createBook} />
+        <BookCreate onCreate={createBook} />
         <BookList books={books} searchBooks={searchBooks} onDelete={deleteBookById} onEdit={editBookById} onSearch={searchBook} user={loggedInUser} showBooks={showBooks} />
       </div>
   }
