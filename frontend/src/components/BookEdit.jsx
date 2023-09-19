@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 
-function BookEdit({ book, onSubmit, user }) {
+function BookEdit({ book, onSubmit }) {
 
     //Handle BookEdit change
     const [formData, setFormData] = useState({ title: book.title, author: book.author, isbn: book.isbn, blurb: book.blurb })
@@ -18,7 +18,7 @@ function BookEdit({ book, onSubmit, user }) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        onSubmit(book._id, formData.title, formData.author, formData.isbn, formData.blurb, user);
+        onSubmit(book._id, formData.title, formData.author, formData.isbn, formData.blurb);
     };
 
     //Bookedit form
