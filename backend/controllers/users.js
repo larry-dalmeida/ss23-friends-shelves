@@ -38,6 +38,6 @@ module.exports.logout = (req, res, next) => {
         }
         // req.flash('success', 'Goodbye!');
         // res.redirect('/');
-        res.send('successfully logged out on the BE!');
     });
+    res.send('successfully logged out on the BE!');
 }

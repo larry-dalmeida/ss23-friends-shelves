@@ -35,7 +35,12 @@ db.once("open", () => {
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors(
+    {
+        origin: 'http://localhost:5173',
+        credentials: true,
+    }
+));
 app.use(methodOverride('_method'));
 
 // Esther revisit for making session work
