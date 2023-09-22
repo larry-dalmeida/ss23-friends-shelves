@@ -1,4 +1,4 @@
-const Joi = require('joi');
+const Joi = require('joi').extend(require('@joi/date'));;
 
 module.exports.bookSchema = Joi.object({
     book: Joi.object({
@@ -14,5 +14,14 @@ module.exports.reviewSchema = Joi.object({
     review: Joi.object({
         rating: Joi.number().required().min(1).max(5),
         body: Joi.string().required(),
+    }).required()
+});
+
+module.exports.borrowingrequestSchema = Joi.object({
+    borrowingrequest: Joi.object({
+        requserid: Joi.string(),
+        status: Joi.string(),
+        message: Joi.string(),
+        dueDate: Joi.date().format('YYYY-MM-DD'),
     }).required()
 });

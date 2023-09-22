@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Review = require('./review');
+const Borrowingrequest = require('./borrowingrequest');
 const Schema = mongoose.Schema;
 
 const BookSchema = new Schema({
@@ -17,6 +18,12 @@ const BookSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'Review',
         }
+    ],
+    borrowingrequests: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Borrowingrequest',
+        }
     ]
 });
 
@@ -26,6 +33,17 @@ BookSchema.post('findOneAndDelete', async function (doc) {
         await Review.deleteMany({
             _id: {
                 $in: doc.reviews
+            }
+        })
+    }
+});
+
+// delete the borrowingrequests in the borrowingrequests database when a book is deleted
+BookSchema.post('findOneAndDelete', async function (doc) {
+    if (doc) {
+        await Borrowingrequest.deleteMany({
+            _id: {
+                $in: doc.borrowingrequests
             }
         })
     }

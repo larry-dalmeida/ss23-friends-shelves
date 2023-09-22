@@ -26,12 +26,12 @@ router.route('/:id')
         catchAsync(books.showBook))
     .put(
         isLoggedIn,
-        isOwner,
+        catchAsync(isOwner),
         validateBook,
         catchAsync(books.updateBook))
     .delete(
         isLoggedIn,
-        isOwner,
+        catchAsync(isOwner),
         catchAsync(books.deleteBook));
 
 module.exports = router;
