@@ -1,12 +1,15 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import BookCreateForm from './BookCreateForm';
+import BooksContext from '../context/books';
 
 
-function BookCreate({ onCreate }) {
+function BookCreate() {
+
+  const { createBook } = useContext(BooksContext);
 
   //Handle submit from the bookcreate form
   const handleSubmit = (title, author, ISBN, blurb) => {
-    onCreate(title, author, ISBN, blurb);
+    createBook(title, author, ISBN, blurb);
     setShowForm(false);
 
   };
