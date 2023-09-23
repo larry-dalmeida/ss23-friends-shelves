@@ -1,15 +1,18 @@
 import BookEdit from './BookEdit';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import BooksContext from '../context/books';
 
 
 
-function BookShow({ book, onDelete, onEdit, user }) {
+function BookShow({ book, user }) {
+
+    const { deleteBookById } = useContext(BooksContext);
 
     //Handle the edit menu for every book
     const [showEdit, setShowEdit] = useState(false);
 
     const handleDeleteClick = () => {
-        onDelete(book._id);
+        deleteBookById(book._id);
     }
 
     const handleEditClick = () => {
@@ -17,9 +20,7 @@ function BookShow({ book, onDelete, onEdit, user }) {
     };
 
     //Handle submissions for edits
-    const handleSubmit = (id, newTitle, newAuthor, newISBN, newImage, newBlurb) => {
-
-        onEdit(id, newTitle, newAuthor, newISBN, newImage, newBlurb);
+    const handleSubmit = () => {
         setShowEdit(false);
     }
 

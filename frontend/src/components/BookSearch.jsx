@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import BooksContext from '../context/books';
 
 
+function BookSearch(){
 
-function BookSearch({onSearch}){
+    const { searchBook } = useContext(BooksContext);
 
     //Handle search querys coming in via the booksearch form
     const [formData, setFormData] = useState({title: ""})
@@ -14,7 +16,7 @@ function BookSearch({onSearch}){
             currData[changedField] = newValue;
             return{...currData};  
         })
-        onSearch(formData.title)
+        searchBook(formData.title)
         console.log(formData)
     }
 

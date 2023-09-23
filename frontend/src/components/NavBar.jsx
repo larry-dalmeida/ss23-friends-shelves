@@ -1,11 +1,15 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import bookImage from '../assets/images/book.png';
 import bookShelves from '../assets/images/bookshelves.png';
 import logout from '../assets/images/logout.png';
 import axios from 'axios';
+import BooksContext from '../context/books';
+
 
 // Esther to Alex: I guess its on your list to not show the nav bar items when someone is 
-function NavBar({ handleFetchBooks, handleLogout }) {
+function NavBar({ handleLogout }) {
+
+        const { handleFetchBooks } = useContext(BooksContext);
 
 
         const handleShowAllBooks = () => {
