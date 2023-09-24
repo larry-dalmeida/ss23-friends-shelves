@@ -1,17 +1,15 @@
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import bookImage from '../assets/images/book.png';
 import bookShelves from '../assets/images/bookshelves.png';
 import logout from '../assets/images/logout.png';
-import axios from 'axios';
 import BooksContext from '../context/books';
 import UserContext from '../context/user';
 
 
-// Esther to Alex: I guess its on your list to not show the nav bar items when someone is 
 function NavBar() {
 
         const { handleFetchBooks, setBooks } = useContext(BooksContext);
-        const { handleLogout } = useContext(UserContext);
+        const { loggedIn, handleLogout } = useContext(UserContext);
 
 
         const handleShowAllBooks = () => {
@@ -22,20 +20,17 @@ function NavBar() {
                 handleFetchBooks("mine");
         };
 
-        // Esther to Alex: can this logic be moved to the App.jsx / some middleware file, that holds all the functions? 
-        // then we don't need axios in this one any more
-        const clickLogout = () => {
-                handleLogout();
-                setBooks([]);
-        };
-       
+        let NavBarIcons = <div><a className="nav-link" onClick={handleShowAllBooks}> <img className='linkImage' src={bookShelves} /> All Books</a>
+        <a className="nav-link" onClick={handleShowMyBooks}> <img className='linkImage' src={bookImage} /> My Bookshelf</a>
+        <a className="nav-link" onClick={() => {handleLogout(); setBooks([]);}}> <img className='linkImage' src={logout} /> Logout</a></div>;
+       if(loggedIn == false){
+        NavBarIcons = "";
+       }
 
         //Show navbar 
         return (<div className="navBar">
                 <img id='logo' src={bookImage} />
-                <a className="nav-link" onClick={handleShowAllBooks}> <img className='linkImage' src={bookShelves} /> All Books</a>
-                <a className="nav-link" onClick={handleShowMyBooks}> <img className='linkImage' src={bookImage} /> My Bookshelf</a>
-                <a className="nav-link" onClick={clickLogout}> <img className='linkImage' src={logout} /> Logout</a>
+                {NavBarIcons}
         </div>)
 
 }

@@ -8,8 +8,9 @@ Currently, two official plugins are available:
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
 TODO:
-- Get alphabetic orderning
-- Get app connected to online MongoDB
+- Clean up CSS
+- Make CSS responsive
+- Make book info collapsable
 - Create lending system
 - Better navigation
 - Add the review system
