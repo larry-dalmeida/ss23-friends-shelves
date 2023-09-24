@@ -6,7 +6,7 @@ import NavigationContext from '../../context/navigation';
 
 function LoginRegisterForm(){
 
-    const { currentPath, navigate } = useContext(NavigationContext);
+    const { currentPath } = useContext(NavigationContext);
     
     //Handle showing the register form
     const [showRegister, setShowRegister] = useState(false);
