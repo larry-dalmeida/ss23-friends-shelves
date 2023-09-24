@@ -94,29 +94,3 @@ module.exports.borrowingrequestBelongsToBook = async (req, res, next) => {
         return console.log('Something went wrong with your request!')
     };
 };
-
-//Esther: change requserId to req.user._id - otherwise working fine
-// To Do later: only populate the borrowingrequest with the ID and not all of them
-// allow request deletion 
-module.exports.isAllowedToDeleteRequest = async (req, res, next) => {
-    const { id, borrowingrequestId } = req.params;
-    const book = await Book.findById(id).populate('borrowingrequests');
-    // const borrowerId = '64f09610fcc82a3f318948fc';
-    const requserId = '64f09610fcc82a3f318948fc';
-    // const ownerId = '64f0969dfcc82a3f3189491a';
-    // const requserId = '64f0969dfcc82a3f3189491a';
-    if (book.owner.equals(requserId)) {
-        // console.log('you are the owner and allowed to delete the request at any time');
-        return next();
-    } if (book.borrowingrequests[0].bookLocation === 'home' && book.borrowingrequests[0].borrower.equals(requserId)) {
-        // console.log('you are the borrower and only allowed to delete the request when the book is still with the owner');
-        return next();
-    } else {
-        console.log('You are not allowed to delete');
-        // req.flash('error', 'You do not have permission to do that!');
-        // return res.redirect(`/books/${id}`)
-        // return res.send('sign in as book owner or borrower please');
-    };
-    res.send('isAllowedToDeleteRequest just ran');
-
-};
