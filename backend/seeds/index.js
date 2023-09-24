@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const { firstName, lastName, titleStart, titleEnd, bookOwners } = require('./seedHelpers');
 const Book = require('../models/book');
 const Review = require('../models/review');
+const Borrowingrequest = require('../models/borrowingrequest');
 
 const dbURL = `${process.env.DB_URL}FriendsShelves`;
 //mongodb://127.0.0.1:27017/friends-shelves
@@ -20,6 +21,7 @@ db.once("open", () => {
 const sample = array => array[Math.floor(Math.random() * array.length)];
 
 const seedDB = async () => {
+    await Borrowingrequest.deleteMany({});
     await Review.deleteMany({});
     await Book.deleteMany({});
     // for checking if documents are properly connected:

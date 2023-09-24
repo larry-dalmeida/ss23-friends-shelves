@@ -7,12 +7,13 @@ const borrowingrequestSchema = new Schema({
         ref: 'User',
         required: true,
     },
-    bookLocation: { type: String, enum: ['home', 'transferLtoB', 'atB', 'transferBtoL'], required: true, },
+    bookLocation: { type: String, enum: ['home', 'transferLtoB', 'atB', 'transferBtoL', 'backHome'], required: true, },
     dueDate: Date,
     textlog: [
         {
             messageText: String,
-            messageWriter: { type: String, enum: ['b', 'l'], }
+            messageWriter: { type: String, enum: ['b', 'l'], },
+            messageTimestamp: Date,
         }
     ],
 });
