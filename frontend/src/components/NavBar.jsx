@@ -4,12 +4,14 @@ import bookShelves from '../assets/images/bookshelves.png';
 import logout from '../assets/images/logout.png';
 import axios from 'axios';
 import BooksContext from '../context/books';
+import UserContext from '../context/user';
 
 
 // Esther to Alex: I guess its on your list to not show the nav bar items when someone is 
-function NavBar({ handleLogout }) {
+function NavBar() {
 
-        const { handleFetchBooks } = useContext(BooksContext);
+        const { handleFetchBooks, setBooks } = useContext(BooksContext);
+        const { handleLogout } = useContext(UserContext);
 
 
         const handleShowAllBooks = () => {
@@ -22,9 +24,11 @@ function NavBar({ handleLogout }) {
 
         // Esther to Alex: can this logic be moved to the App.jsx / some middleware file, that holds all the functions? 
         // then we don't need axios in this one any more
-        const clickLogout = async () => {
+        const clickLogout = () => {
                 handleLogout();
+                setBooks([]);
         };
+       
 
         //Show navbar 
         return (<div className="navBar">

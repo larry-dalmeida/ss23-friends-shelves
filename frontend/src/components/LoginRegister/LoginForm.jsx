@@ -1,7 +1,10 @@
-import {useState} from 'react'; 
+import {useState, useContext} from 'react'; 
+import UserContext from '../../context/user';
 
 
-function LoginForm ({onSubmit}) {
+function LoginForm () {
+
+    const { handleLogin } = useContext(UserContext);
 
      //Handle the data from the login form
 
@@ -19,7 +22,7 @@ function LoginForm ({onSubmit}) {
  
      const handleSubmit = (event) => {
          event.preventDefault();
-         onSubmit(formData.username, formData.password);
+         handleLogin(formData.username, formData.password);
      };
  
      //Login form

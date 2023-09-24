@@ -1,21 +1,23 @@
 import BookShow from './BookShow'
 import { useContext } from 'react';
 import BooksContext from '../context/books';
+import UserContext from '../context/user';
 
-function BookList({user}) {
+function BookList() {
 
     const { books, searchBooks, showBooks } = useContext(BooksContext);
+    const { loggedInUser } = useContext(UserContext);
 
     //render all books in books array
     let renderedBooks = books.map((book) => {
-        return <BookShow key={book._id} book={book} user={user} />;
+        return <BookShow key={book._id} book={book} user={loggedInUser} />;
         //Esther: do you actually need to pass key - it is included in book I think?
     });
 
     //render books that adhere to search query if there are any 
     if (searchBooks.length > 0) {
         renderedBooks = searchBooks.map((book) => {
-            return <BookShow key={book._id} book={book} user={user} />;
+            return <BookShow key={book._id} book={book} user={loggedInUser} />;
         });
     }
 

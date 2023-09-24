@@ -1,7 +1,10 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import UserContext from '../../context/user';
 
 
-function RegisterForm({ onRegister, setShowRegister }) {
+function RegisterForm({ setShowRegister }) {
+
+    const { handleRegister, handleLogin } = useContext(UserContext);
 
     //Handle the data from the register form
 
@@ -19,7 +22,7 @@ function RegisterForm({ onRegister, setShowRegister }) {
 
     const handleRegisterSubmit = (event) => {
         event.preventDefault();
-        onRegister(registerFormData.username, registerFormData.email, registerFormData.password);
+        handleRegister(registerFormData.username, registerFormData.email, registerFormData.password);
         setShowRegister(false);
     };
 
