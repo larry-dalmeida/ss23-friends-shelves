@@ -7,68 +7,31 @@ import BookSearch from './components/BookSearch';
 import NavBar from './components/NavBar';
 import LoginRegisterForm from './components/LoginRegister/LoginRegisterForm';
 import BooksContext from './context/books';
+import UserContext from './context/user';
 
 
 
 function App() {
-
   
-  const { setBooks, handleFetchBooks } = useContext(BooksContext);
-
-  //Register users that are registring 
-  const [loggedInUser, setLoggedInUser] = useState([]);
-  
-  //Handle login and password validation
-  const [showLogin, setShowLogin] = useState(true);
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  const userLoginSateChanges = (user) => {
-    if (user) {
-      setLoggedInUser(user);
-      setLoggedIn(true);
-      setShowLogin(false);
-    }
-  };
+  const { handleFetchBooks } = useContext(BooksContext);
+  const { loggedIn, showLogin } = useContext(UserContext);
+    
   useEffect(() => {
     if (loggedIn === true) {
       handleFetchBooks("mine");
     }
   }, [loggedIn])
 
-  // Esther to Alex: the session is now woking. With it on every request I can access the req.user object with the user _id username and email
-  // you could check if there is a way for you to get the userdata you need for display or logic from the session or if its common that 
-  // this info is sent from the BE and than, as we do it currently, saved to a State
-  const handleLogin = async (username, password) => {
-    const response = await axios.post('http://localhost:8080/login', { username, password }, { withCredentials: true });
-    const user = response.data;
-    userLoginSateChanges(user);
-  };
 
-  const handleRegister = async (username, email, password) => {
-    const response = await axios.post('http://localhost:8080/register', { username, email, password }, { withCredentials: true })
-    const user = response.data;
-    userLoginSateChanges(user);
-  }
-
-  // Logout function to set all States back to 0
-  const handleLogout = async () => {
-    const response = await axios.get('http://localhost:8080/logout', { withCredentials: true });
-    // console.log(response);
-    setShowLogin(true);
-    setLoggedIn(false);
-    setLoggedInUser([]);
-    setBooks([]);
-  }
-
-  let showPage = <div><NavBar /> <LoginRegisterForm onSubmit={handleLogin} onRegister={handleRegister} /></div>
+  let showPage = <div><NavBar /> <LoginRegisterForm /></div>
 
   if (showLogin == false) {
     showPage =
       <div>
-        <NavBar handleLogout={handleLogout} />
+        <NavBar />
         <BookSearch />
         <BookCreate />
-        <BookList user={loggedInUser} />
+        <BookList />
       </div>
   }
 
