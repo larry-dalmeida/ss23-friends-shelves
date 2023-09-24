@@ -12,6 +12,5 @@ TODO:
 - Make CSS responsive
 - Make book info collapsable
 - Create lending system
-- Better navigation
 - Add the review system
 - Add the landing page 
