@@ -1,10 +1,12 @@
 import {useState, useContext} from 'react'; 
 import UserContext from '../../context/user';
+import NavigationContext from '../../context/navigation';
 
 
 function LoginForm () {
 
     const { handleLogin } = useContext(UserContext);
+    const { navigate } = useContext(NavigationContext);
 
      //Handle the data from the login form
 
@@ -22,8 +24,8 @@ function LoginForm () {
  
      const handleSubmit = (event) => {
          event.preventDefault();
-         handleLogin(formData.username, formData.password);
-
+         navigate("/mybooks")
+         handleLogin(formData.username, formData.password);       
      };
  
      //Login form
