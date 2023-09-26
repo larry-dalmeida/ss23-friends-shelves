@@ -11,7 +11,7 @@ function BookList() {
     //render all books in books array
     let renderedBooks = books.map((book) => {
         return <BookShow key={book._id} book={book} user={loggedInUser} />;
-        //Esther: do you actually need to pass key - it is included in book I think?
+        //Esther to Alex: do you actually need to pass key - it is included in book I think?
     });
 
     //render books that adhere to search query if there are any 
