@@ -4,14 +4,23 @@ import axios from 'axios';
 
 const UserContext = createContext();
 
-function Provider({ children }){
+function Provider({ children }) {
 
   //Register users that are registring 
   const [loggedInUser, setLoggedInUser] = useState([]);
 
-   //Handle login and password validation
-   const [showLogin, setShowLogin] = useState(true);
-   const [loggedIn, setLoggedIn] = useState(false);
+  //Handle login and password validation
+  const [showLogin, setShowLogin] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  // state changes upon login (triggered by login or register)
+  const userLoginSateChanges = (user) => {
+    if (user) {
+      setLoggedInUser(user);
+      setLoggedIn(true);
+      setShowLogin(false);
+    }
+  };
 
   // Esther to Alex: the session is now woking. With it on every request I can access the req.user object with the user _id username and email
   // you could check if there is a way for you to get the userdata you need for display or logic from the session or if its common that 
@@ -20,14 +29,6 @@ function Provider({ children }){
     const response = await axios.post('http://localhost:8080/login', { username, password }, { withCredentials: true });
     const user = response.data;
     userLoginSateChanges(user);
-  };
-
-  const userLoginSateChanges = (user) => {
-    if (user) {
-      setLoggedInUser(user);
-      setLoggedIn(true);
-      setShowLogin(false);
-    }
   };
 
   const handleRegister = async (username, email, password) => {
@@ -53,12 +54,12 @@ function Provider({ children }){
     handleLogout,
     handleRegister,
     userLoginSateChanges,
-    
-}
 
-    return <UserContext.Provider value={valueToShare}>
-        { children }
-    </UserContext.Provider>
+  }
+
+  return <UserContext.Provider value={valueToShare}>
+    {children}
+  </UserContext.Provider>
 
 }
 

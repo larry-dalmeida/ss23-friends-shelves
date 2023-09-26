@@ -7,7 +7,7 @@ function BookEdit({ book, onSubmit }) {
     const { editBookById } = useContext(BooksContext);
 
     //Handle BookEdit change
-    const [formData, setFormData] = useState({ title: book.title, author: book.author, isbn: book.isbn, blurb: book.blurb })
+    const [formData, setFormData] = useState({ title: book.title, author: book.author, isbn: book.isbn, blurb: book.blurb });
 
     const handleChange = (event) => {
         const changedField = event.target.name;
