@@ -47,6 +47,18 @@ module.exports.isOwner = async (req, res, next) => {
     // console.log('isOwner just ran');
     next();
 };
+// Esther: revisit when session is working
+module.exports.isNotOwner = async (req, res, next) => {
+    const { id } = req.params;
+    const book = await Book.findById(id);
+    if (book.owner.equals(req.user._id)) {
+        // req.flash('error', 'You do not have permission to do that!');
+        // return res.redirect(`/books/${id}`)
+        return res.send('This is your book! You cant do borrowing requests for it!');
+    };
+    // console.log('isNotOwner just ran');
+    next();
+};
 
 // Esther: revisit when session is working and we want to incorporate reviews
 module.exports.isReviewWriter = async (req, res, next) => {
@@ -92,5 +104,18 @@ module.exports.borrowingrequestBelongsToBook = async (req, res, next) => {
         // req.flash('error', 'Something went wrong with your request!');
         // return res.redirect(`/books/${id}`);
         return console.log('Something went wrong with your request!')
+    };
+};
+
+// checks for new borrowingrequests, if the book is with the lender
+module.exports.bookHasOngoingBorrowingrequest = async (req, res, next) => {
+    const { id } = req.params;
+    const book = await Book.findById(id).populate('borrowingrequests');
+    const indexLastBorrowingrequest = book.borrowingrequests.length - 1;
+    if (book.borrowingrequests[indexLastBorrowingrequest].bookLocation === 'backHome') {
+        return next();
+    } else {
+        // req.flash('error', 'your borrowingrequest failed, because the book is currently not at the lender.');
+        return res.send('your borrowingrequest failed, because the book is currently not at the lender.');
     };
 };

@@ -19,6 +19,7 @@ module.exports.reviewSchema = Joi.object({
 
 module.exports.borrowingrequestSchema = Joi.object({
     borrowingrequest: Joi.object({
+        // Esther: ToDo when FE borrwoing logic is up: get rid of requserid
         requserid: Joi.string(),
         status: Joi.string(),
         message: Joi.string(),
