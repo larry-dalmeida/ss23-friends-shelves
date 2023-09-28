@@ -19,9 +19,10 @@ module.exports.createBorrowingrequest = async (req, res) => {
     book.borrowingrequests.push(borrowingrequest);
     await borrowingrequest.save();
     await book.save();
+    const updatedBook = await Book.findById(id).populate('borrowingrequests');
     // req.flash('success', 'Created new review!');
     // res.redirect(`/books/${id}`);
-    res.send(book);
+    res.send(updatedBook);
 };
 
 module.exports.deleteBorrowingrequest = async (req, res) => {
@@ -69,7 +70,7 @@ module.exports.handlePostBorrowingrequest = async (req, res) => {
 
     // Esther: check the dueDate setting logic, so that its borrower and lender friendly when FE is up
     // logic for updating the request depending on the current situation
-    if (borrowingrequest.bookLocation === 'home' && status === 'backHome' && borrowingrequest.borrower.equals(requserid)) {
+    if (borrowingrequest.bookLocation === 'home' && status === 'backHome') {
         borrowingrequest.bookLocation = status;
         borrowingrequest.dueDate = reqTimestamp;
         pushMessage();
