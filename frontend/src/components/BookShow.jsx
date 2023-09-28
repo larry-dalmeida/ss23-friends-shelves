@@ -24,25 +24,14 @@ function BookShow({ book, user }) {
         setShowEdit(false);
     }
 
-    // Esther: book image in line with what db responds - to do: set book image Url in DB by ISBN query of openlibrary  
-    // let bookImage = 'https://covers.openlibrary.org/b/isbn/'.concat(book.ISBN, '-M.jpg');
-    let bookImage = book.image;
-
-    let bookInLibrary = "In Library";
-
-    if (book.owner._id !== user[0]._id) {
-        bookInLibrary = "Not In Library";
-    }
-
     //Show the book as object
     // let content = <div key={book._id}><p><img className='bookCover' src={bookImage} /></p><b>{book.title}</b><p>{book.author}</p>{book.ISBN}<p>{bookInLibrary}</p>{book.blurb}</div>
     let content = <div key={book._id}>
-        <p><img className='bookCover' src={bookImage} /></p>
+        <p><img className='bookCover' src={book.image} /></p>
         <b>{book.title}</b>
         <p>{book.author}</p>
         <p>{book.isbn} </p>
         <p>owned by: {book.owner.username}</p>
-        <p>{bookInLibrary}</p>
         <p>{book.blurb}</p>
     </div>
         ;
@@ -59,12 +48,15 @@ function BookShow({ book, user }) {
             </p>
         </div>
 
-    if (bookInLibrary !== "In Library") {
-        actions = <div></div>
+
+    if (book.owner._id !== user[0]._id) {
+        actions = <></>
     }
 
     //if edit button has been pressed, show edit menu for set book
     if (showEdit) {
+        // Esther to Alex: in BookEdit you don't actually read the user in and you don't need it for any logic
+        // and I guess because of context you don't need to pass either book nor user down any more
         content = <BookEdit onSubmit={handleSubmit} book={book} user={user} />;
     }
 

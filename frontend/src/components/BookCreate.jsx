@@ -11,7 +11,6 @@ function BookCreate() {
   const handleSubmit = (title, author, ISBN, blurb) => {
     createBook(title, author, ISBN, blurb);
     setShowForm(false);
-
   };
 
   //Handle showing the bookcreateform when button is pressed
