@@ -19,6 +19,7 @@ const cors = require('cors');
 const userRoutes = require('./routes/userRoutes');
 const bookRoutes = require('./routes/bookRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
+const borrowingrequestRoutes = require('./routes/borrowingrequestRoutes');
 
 // setup of the MongoDbAtlas
 const dbURL = process.env.DB_URL;
@@ -80,6 +81,7 @@ app.use((req, res, next) => {
 app.use('/', userRoutes);
 app.use('/books', bookRoutes);
 app.use('/books/:id/reviews', reviewRoutes);
+app.use('/books/:id/borrowingrequest', borrowingrequestRoutes);
 
 // further routes
 app.get('/', (req, res) => {
