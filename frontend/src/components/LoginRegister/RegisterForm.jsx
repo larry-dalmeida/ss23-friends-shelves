@@ -1,11 +1,16 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import UserContext from '../../context/user';
 
 
-function RegisterForm({ onRegister, setShowRegister }) {
+function RegisterForm({ setShowRegister }) {
+
+    // Esther to Alex: do we need handleLogin here? - i guess this comes with the to do of the bug,
+    // that login upon register does currently not work?
+    const { handleRegister, handleLogin } = useContext(UserContext);
 
     //Handle the data from the register form
 
-    const [registerFormData, setRegisterFormData] = useState({ username: "", email: "", password: "" })
+    const [registerFormData, setRegisterFormData] = useState({ username: "", email: "", password: "" });
 
     const handleRegisterChange = (event) => {
         const changedField = event.target.name;
@@ -19,7 +24,7 @@ function RegisterForm({ onRegister, setShowRegister }) {
 
     const handleRegisterSubmit = (event) => {
         event.preventDefault();
-        onRegister(registerFormData.username, registerFormData.email, registerFormData.password);
+        handleRegister(registerFormData.username, registerFormData.email, registerFormData.password);
         setShowRegister(false);
     };
 

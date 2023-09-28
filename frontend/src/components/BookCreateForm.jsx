@@ -4,7 +4,7 @@ import { useState } from 'react';
 function BookCreateForm({ onSubmit, onClick }) {
 
     //Handle book submit form changes and submit
-    const [formData, setFormData] = useState({ title: "", author: "", isbn: "", blurb: "" })
+    const [formData, setFormData] = useState({ title: "", author: "", isbn: "", blurb: "" });
 
     const handleChange = (event) => {
         const changedField = event.target.name;
