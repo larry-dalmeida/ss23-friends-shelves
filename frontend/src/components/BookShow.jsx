@@ -24,29 +24,14 @@ function BookShow({ book, user }) {
         setShowEdit(false);
     }
 
-    // Esther: book image in line with what db responds - to do: set book image Url in DB by ISBN query of openlibrary  
-    // let bookImage = 'https://covers.openlibrary.org/b/isbn/'.concat(book.ISBN, '-M.jpg');
-    // Esther to Alex: do we need to define bookImage could we not just use book.image further down?
-    let bookImage = book.image;
-
-    // Esther to Alex: I guess we can get rid of the in Library stuff and as a decision maker use the owner logic
-    // or better: I want to work on only passing through the owner id for the books the logged in user is the owner for - securety stuff
-    // so the logic could be based on only books, where book.owner is even defined - lets talk about this
-    let bookInLibrary = "In Library";
-
-    if (book.owner._id !== user[0]._id) {
-        bookInLibrary = "Not In Library";
-    }
-
     //Show the book as object
     // let content = <div key={book._id}><p><img className='bookCover' src={bookImage} /></p><b>{book.title}</b><p>{book.author}</p>{book.ISBN}<p>{bookInLibrary}</p>{book.blurb}</div>
     let content = <div key={book._id}>
-        <p><img className='bookCover' src={bookImage} /></p>
+        <p><img className='bookCover' src={book.image} /></p>
         <b>{book.title}</b>
         <p>{book.author}</p>
         <p>{book.isbn} </p>
         <p>owned by: {book.owner.username}</p>
-        <p>{bookInLibrary}</p>
         <p>{book.blurb}</p>
     </div>
         ;
@@ -63,10 +48,9 @@ function BookShow({ book, user }) {
             </p>
         </div>
 
-    if (bookInLibrary !== "In Library") {
-        // Esther to Alex: Colt described that there is a way to not create a DOM element 
-        //  this will create empty divs, but the div still exists out of no reason
-        actions = <div></div>
+
+    if (book.owner._id !== user[0]._id) {
+        actions = <></>
     }
 
     //if edit button has been pressed, show edit menu for set book
