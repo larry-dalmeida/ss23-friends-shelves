@@ -29,7 +29,8 @@ module.exports.validateBook = (req, res, next) => {
     const { error } = bookSchema.validate(req.body);
     if (error) {
         const msg = error.details.map(el => el.message).join(',');
-        throw new ExpressError(msg, 400)
+        res.send(msg);
+        // throw new ExpressError(msg, 400)
     } else {
         next();
     }
@@ -65,7 +66,7 @@ module.exports.isReviewWriter = async (req, res, next) => {
     const { id, reviewId } = req.params;
     const review = await Review.findById(reviewId);
     if (!review.writer.equals(req.user._id)) {
-        req.flash('error', 'You do not have permission to do that!');
+        // req.flash('error', 'You do not have permission to do that!');
         return res.redirect(`/campgrounds/${id}`)
     };
     next();
@@ -76,7 +77,8 @@ module.exports.validateReview = (req, res, next) => {
     const { error } = reviewSchema.validate(req.body);
     if (error) {
         const msg = error.details.map(el => el.message).join(',');
-        throw new ExpressError(msg, 400)
+        res.send(msg);
+        // throw new ExpressError(msg, 400)
     } else {
         next();
     }
@@ -87,7 +89,8 @@ module.exports.validateBorrowingrequest = (req, res, next) => {
     const { error } = borrowingrequestSchema.validate(req.body);
     if (error) {
         const msg = error.details.map(el => el.message).join(',');
-        throw new ExpressError(msg, 400)
+        res.send(msg);
+        // throw new ExpressError(msg, 400)
     } else {
         next();
     }
@@ -111,11 +114,14 @@ module.exports.borrowingrequestBelongsToBook = async (req, res, next) => {
 module.exports.bookHasOngoingBorrowingrequest = async (req, res, next) => {
     const { id } = req.params;
     const book = await Book.findById(id).populate('borrowingrequests');
-    const indexLastBorrowingrequest = book.borrowingrequests.length - 1;
-    if (book.borrowingrequests[indexLastBorrowingrequest].bookLocation === 'backHome') {
-        return next();
-    } else {
-        // req.flash('error', 'your borrowingrequest failed, because the book is currently not at the lender.');
-        return res.send('your borrowingrequest failed, because the book is currently not at the lender.');
+    if (book.borrowingrequests.length !== 0) {
+        const indexLastBorrowingrequest = book.borrowingrequests.length - 1;
+        if (book.borrowingrequests[indexLastBorrowingrequest].bookLocation === 'backHome') {
+            return next();
+        } else {
+            // req.flash('error', 'your borrowingrequest failed, because the book is currently not at the lender.');
+            return res.send('your borrowingrequest failed, because the book is currently not at the lender.');
+        };
     };
+    return next();
 };
