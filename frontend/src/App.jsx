@@ -17,7 +17,7 @@ import './App.css';
 function App() {
 
   const { handleFetchBooks, setBooks } = useContext(BooksContext);
-  const { loggedIn, showLogin, handleLogout } = useContext(UserContext);
+  const { loggedIn, showLogin, handleLogout, handleLogin } = useContext(UserContext);
   const { currentPath, navigate } = useContext(NavigationContext);
 
   useEffect(() => {
@@ -40,7 +40,29 @@ function App() {
     }
   }, [currentPath]);
 
-  let showPage = <div><NavBar /> <LoginRegisterForm /></div>
+  const handleLoginBob = (event) => {
+    event.preventDefault();
+    navigate("/mybooks");
+    handleLogin("bob", "bob");
+  };
+  const handleLoginBibi = (event) => {
+    event.preventDefault();
+    navigate("/mybooks");
+    handleLogin("bibi", "bibi");
+  };
+  const handleLoginBodo = (event) => {
+    event.preventDefault();
+    navigate("/mybooks");
+    handleLogin("bodo", "bodo");
+  };
+
+  let showPage = <div>
+    <NavBar />
+    <LoginRegisterForm />
+    <button onClick={handleLoginBob}>Bob</button>
+    <button onClick={handleLoginBibi}>Bibi</button>
+    <button onClick={handleLoginBodo}>Bodo</button>
+  </div>
 
   if (showLogin == false) {
     showPage =
