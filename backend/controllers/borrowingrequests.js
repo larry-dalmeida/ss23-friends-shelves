@@ -2,6 +2,7 @@ const Book = require('../models/book');
 const Borrowingrequest = require('../models/borrowingrequest');
 
 // create a borrowingrequest
+// NIT: [Naming Conventions] createBorrowingRequest (camelCase)
 module.exports.createBorrowingrequest = async (req, res) => {
     const reqTimestamp = new Date();
     const { id } = req.params;
@@ -53,6 +54,10 @@ module.exports.handlePostBorrowingrequest = async (req, res) => {
     // some logic that only allows dueDate adjustment for dueDates that lie in the future 
     // and prevent L to set dueDate in transferBtoL previous of the reqTimestampPlus3days
     const setDueDate = () => {
+        // FIXME: [Readability] Since the condition blocks below are mutually exclusive, recommend returning early to avoid:
+        // 1. unnecessary nesting
+        // 2. holding the full model of how it works in the readers end until the last line 
+        // for more info: https://medium.com/swlh/return-early-pattern-3d18a41bba8
         if (borrowingrequest.bookLocation === 'transferBtoL') {
             if (borrowingrequest.dueDate < dueDate) {
                 borrowingrequest.dueDate = dueDate;
@@ -70,6 +75,7 @@ module.exports.handlePostBorrowingrequest = async (req, res) => {
 
     // Esther: check the dueDate setting logic, so that its borrower and lender friendly when FE is up
     // logic for updating the request depending on the current situation
+    // FIXME: [Readability] The logic tree below is becoming hard to read, I've got some ideas, will add comments later
     if (borrowingrequest.bookLocation === 'home' && status === 'backHome') {
         borrowingrequest.bookLocation = status;
         borrowingrequest.dueDate = reqTimestamp;

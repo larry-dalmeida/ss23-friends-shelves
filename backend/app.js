@@ -21,6 +21,7 @@ const bookRoutes = require('./routes/bookRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const borrowingrequestRoutes = require('./routes/borrowingrequestRoutes');
 
+// FIXME: [Code Organisation] Would recommend moving DB specific code to a separate file
 // setup of the MongoDbAtlas
 const dbURL = process.env.DB_URL;
 //mongodb://127.0.0.1:27017/friends-shelves
@@ -38,6 +39,8 @@ const app = express();
 app.use(express.json());
 app.use(cors(
     {
+        // FIXME: [Code Organisation] Seems like a development only configuration, is an equivalent needed for production?
+        // Might benefit from configuring via an environment config
         origin: 'http://localhost:5173',
         credentials: true,
     }
@@ -46,11 +49,15 @@ app.use(methodOverride('_method'));
 
 // Esther revisit for making session work
 const sessionConfig = {
+    // FIXME: [Security] Move this to a environment config ex: .env
     secret: 'thisshouldbeabettersecret!',
     resave: false,
     saveUninitialized: true,
     cookie: {
         httpOnly: true,
+        // FIXME: [Readability] Using a named variable for otherwise 'magic' numbers would make this more readable, example:
+        // const oneWeekFromNow = Date.now() + 1000 * 60 * 60 * 24 * 7;
+        // expires: oneWeekFromNow,
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7,
     }
@@ -78,6 +85,7 @@ app.use((req, res, next) => {
 });
 
 // Route necessities in routers folder
+// FOLLOW-UP: [Architecture] API route design, trade-offs
 app.use('/', userRoutes);
 app.use('/books', bookRoutes);
 app.use('/books/:id/reviews', reviewRoutes);
@@ -93,6 +101,7 @@ app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found', 404))
 })
 
+// FOLLOW-UP: Catch All Error Handler
 app.use((err, req, res, next) => {
     const { statusCode = 500 } = err;
     if (!err.message) err.message = 'Oh No, Something went wrong!';

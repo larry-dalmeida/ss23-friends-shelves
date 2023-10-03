@@ -4,8 +4,9 @@ const catchAsync = require('../utils/catchAsync');
 const books = require('../controllers/books');
 const { isLoggedIn, validateBook, isOwner } = require('../middleware');
 
-
-
+// FIXME: [Code Organisation, Security] Seems like the isLoggedIn middleware is needed for every route
+// you could apply it when you 'use' the books route in the app router
+// see https://expressjs.com/en/guide/using-middleware.html for examples
 router.route('/')
     .get(
         isLoggedIn,
